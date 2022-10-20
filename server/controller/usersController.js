@@ -30,7 +30,7 @@ const createNewUser = async (req, res) => {
   if (!empID || !firstName || !lastName) {
     return res
       .status(400)
-      .json({ message: "First and Last names and Roles are required" });
+      .json({ message: "First and Last names are required!" });
   }
   const duplicate = await Employee.findOne({ empID }).exec();
   if (duplicate) return res.status(409).json({ message: "Duplicate Employee" });

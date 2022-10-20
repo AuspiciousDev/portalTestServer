@@ -36,11 +36,28 @@ app.use(express.json());
 // middleware for cookies
 app.use(cookieParser());
 
+//serve static files
+app.use("/", express.static(path.join(__dirname, "/public")));
+
 // API ROUTES
+app.use("/", require("./routes/root"));
 app.use("/api/users", require("./routes/api/usersRoute"));
 app.use("/api/students", require("./routes/api/studentsRoute"));
 
 app.use(errorHandler);
+
+
+app.all("*", (req, res) => {
+  res.status(404);
+  if (req.accepts("html")) {
+    res.sendFile(path.join(__dirname, "page", "404.html"));
+  } else if (req.accepts("json")) {
+    res.json({ error: "404 Not Found" });
+  } else {
+    res.type("txt").send("404 Not Found");
+  }
+});
+
 mongoose.connection.once("open", () => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
