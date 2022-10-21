@@ -46,7 +46,6 @@ app.use("/api/students", require("./routes/api/studentsRoute"));
 
 app.use(errorHandler);
 
-
 app.all("*", (req, res) => {
   res.status(404);
   if (req.accepts("html")) {

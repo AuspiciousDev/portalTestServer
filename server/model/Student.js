@@ -10,10 +10,15 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
+  middleName: {
+    type: String,
+    required: true,
+  },
   lastName: {
     type: String,
     required: true,
   },
+  
 
   refreshToken: String,
 });

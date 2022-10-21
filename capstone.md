@@ -1,3 +1,2 @@
-#CAPSTONE CHECK
-
-1 [x]
+#Checklist
+1.  [x]]
