@@ -25,7 +25,12 @@ app.use(logger);
 app.use(credentials);
 
 // Cross Origin Resource Sharing
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "http://localhost:3600",
+  })
+);
 
 // built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
@@ -42,7 +47,9 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 // API ROUTES
 app.use("/", require("./routes/root"));
 app.use("/api/users", require("./routes/api/usersRoute"));
+app.use("/api/employees", require("./routes/api/employeesRoute"));
 app.use("/api/students", require("./routes/api/studentsRoute"));
+app.use("/api/grades", require("./routes/api/gradesRoute"));
 
 app.use(errorHandler);
 

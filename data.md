@@ -13,6 +13,9 @@
 - [School Year](#school-year)
 - [Term](#term)
 - [Grade](#grade)
+  - [STUDENTS DATA](#students-data)
+  - [Grades](#grades)
+  - [Subject](#subject-2)
 
 # User Login Data
 
@@ -26,10 +29,11 @@
 - First Name
 - Middle Name
 - Last Name
+- Suffix
 - Department
 - Email
 - Contact Number
-- Subject Load
+<!-- - Subject Load -->
 
 # Student Data
 
@@ -103,3 +107,27 @@
 - Instructor ID
 - Grade
 - Date Posted
+
+## STUDENTS DATA
+
+- Student ID
+- First Name
+- Middle Name
+- Last Name
+- Suffix
+- Email
+- Contact Number
+-
+
+## Grades
+
+- Grade ID
+- Student ID
+- Subject ID
+- Level
+- Grades
+
+## Subject
+
+- Subject ID
+- Title

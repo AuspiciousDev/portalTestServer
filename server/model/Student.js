@@ -18,8 +18,22 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  
-
+  suffix: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  contactNumber: {
+    type: Number,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
   refreshToken: String,
 });
 
