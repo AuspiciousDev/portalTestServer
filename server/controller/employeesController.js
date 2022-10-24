@@ -7,29 +7,30 @@ const createNewEmployee = async (req, res) => {
     middleName,
     lastName,
     suffix,
-    department,
-    email,
-    contactNumber,
+    placeOfBirth,
+    gender,
+    dateOfBirth,
+    civilStatus,
+    nationality,
     address,
+    city,
+    province,
+    email,
+    mobile,
+    telephone,
+    department,
+    position,
+    contactName,
+    relationship,
+    emergencyNumber,
   } = req.body;
-  if (
-    !empID ||
-    !firstName ||
-    !middleName ||
-    !lastName ||
-    !suffix ||
-    !department ||
-    !email ||
-    !contactNumber ||
-    !address
-  ) {
-    return res.status(400).json({ message: "Incomplete details!" });
-  }
-  if (!Number(empID))
+  console.log(empID);
+
+  if (!Number(req.body.empID))
     return res
       .status(409)
       .json({ message: `[${empID}] is not a valid Employee ID` });
-  if (!Number(contactNumber))
+  if (!Number(mobile))
     return res
       .status(409)
       .json({ message: `[${contactNumber}] is not a valid Contact Number` });
@@ -42,10 +43,22 @@ const createNewEmployee = async (req, res) => {
     middleName,
     lastName,
     suffix,
-    department,
-    email,
-    contactNumber,
+    dateOfBirth,
+    placeOfBirth,
+    gender,
+    civilStatus,
+    nationality,
     address,
+    city,
+    province,
+    email,
+    mobile,
+    telephone,
+    department,
+    position,
+    contactName,
+    relationship,
+    emergencyNumber,
   };
   try {
     const empObjectRes = await Employee.create(empObject);

@@ -26,21 +26,22 @@ const bcrypt = require("bcrypt");
 // };
 
 const createNewUser = async (req, res) => {
-  const { empID, firstName, lastName } = req.body;
-  if (!empID || !firstName || !lastName) {
+  const { empID } = req.body;
+  if (!empID) {
     return res
       .status(400)
       .json({ message: "First and Last names are required!" });
   }
-  const duplicate = await Employee.findOne({ empID }).exec();
-  if (duplicate) return res.status(409).json({ message: "Duplicate Employee" });
+  const duplicate = await User.findOne({ username: req.body.empID }).exec();
+  console.log(duplicate);
+  if (duplicate) return res.status(409).json({ message: "Duplicate User!" });
   const hashedPassword = await bcrypt.hash("12345", 10);
-  const empObject = { empID, firstName, lastName };
+  //const empObject = { empID, firstName, lastName };
   const userObject = { username: empID, password: hashedPassword };
   try {
-    const empObjectRes = await Employee.create(empObject);
+    // const empObjectRes = await Employee.create(empObject);
     const userObjectRes = await User.create(userObject);
-    res.status(201).json({ empObjectRes, userObjectRes });
+    res.status(201).json({ userObjectRes });
   } catch (error) {
     console.error(error);
   }

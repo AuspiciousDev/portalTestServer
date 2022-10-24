@@ -12,7 +12,6 @@ const userSchema = new Schema({
   },
   middleName: {
     type: String,
-    required: true,
   },
   lastName: {
     type: String,
@@ -20,9 +19,39 @@ const userSchema = new Schema({
   },
   suffix: {
     type: String,
+  },
+  dateOfBirth: {
+    type: String,
     required: true,
   },
-  department: {
+  placeOfBirth: {
+    type: String,
+    required: true,
+  },
+  gender: {
+    type: String,
+    required: true,
+  },
+  civilStatus: {
+    type: String,
+    required: true,
+  },
+  nationality: {
+    type: String,
+    required: true,
+  },
+  religion: {
+    type: String,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  province: {
     type: String,
     required: true,
   },
@@ -30,12 +59,31 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  contactNumber: {
+  mobile: {
     type: Number,
     required: true,
   },
-  address: {
+  telephone: {
+    type: Number,
+  },
+  department: {
     type: String,
+    required: true,
+  },
+  position: {
+    type: String,
+    required: true,
+  },
+  contactName: {
+    type: String,
+    required: true,
+  },
+  relationship: {
+    type: String,
+    required: true,
+  },
+  emergencyNumber: {
+    type: Number,
     required: true,
   },
   refreshToken: String,
