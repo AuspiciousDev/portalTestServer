@@ -12,6 +12,7 @@ const userSchema = new Schema({
   },
   middleName: {
     type: String,
+    default: "n/a"
   },
   lastName: {
     type: String,
@@ -19,6 +20,7 @@ const userSchema = new Schema({
   },
   suffix: {
     type: String,
+    default: "n/a"
   },
   dateOfBirth: {
     type: String,
@@ -42,6 +44,7 @@ const userSchema = new Schema({
   },
   religion: {
     type: String,
+    default: "n/a"
   },
   address: {
     type: String,
@@ -65,6 +68,7 @@ const userSchema = new Schema({
   },
   telephone: {
     type: Number,
+    default: "n/a"
   },
   department: {
     type: String,

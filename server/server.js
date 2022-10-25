@@ -3,7 +3,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const cors = require("cors");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
 
 const { logger } = require("./middleware/logEvents");
 const errorHandler = require("./middleware/errorHandler");
@@ -50,6 +50,7 @@ app.use("/api/users", require("./routes/api/usersRoute"));
 app.use("/api/employees", require("./routes/api/employeesRoute"));
 app.use("/api/students", require("./routes/api/studentsRoute"));
 app.use("/api/grades", require("./routes/api/gradesRoute"));
+app.use("/api/subjects", require("./routes/api/subjectsRoute"));
 
 app.use(errorHandler);
 
