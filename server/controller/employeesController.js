@@ -81,7 +81,7 @@ const createNewEmployee = async (req, res) => {
 };
 
 const getAllEmployees = async (req, res) => {
-  const response = await Employee.find();
+  const response = await Employee.find().sort({ empID: -1 });
   if (!response) return res.status(204).json({ message: "No Users Found!" });
   res.status(200).json(response);
 };
@@ -124,7 +124,7 @@ const updateEmployeeByID = async (req, res) => {
 };
 
 const deleteEmployeeByID = async (req, res) => {
-  console.log("test", req.params.empID);
+  console.log("DELETE :", req.params.empID);
   if (!req?.params?.empID) {
     return res.status(400).json({ message: "ID required!" });
   }

@@ -8,6 +8,7 @@ const bodyParser = require("body-parser");
 const { logger } = require("./middleware/logEvents");
 const errorHandler = require("./middleware/errorHandler");
 const credentials = require("./middleware/credentials");
+const verifyJWT = require("./middleware/verifyJWT");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 
@@ -46,6 +47,10 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 
 // API ROUTES
 app.use("/", require("./routes/root"));
+// Handle Login Route
+app.use("/auth", require("./routes/auth"));
+
+app.use(verifyJWT);
 app.use("/api/users", require("./routes/api/usersRoute"));
 app.use("/api/employees", require("./routes/api/employeesRoute"));
 app.use("/api/students", require("./routes/api/studentsRoute"));
