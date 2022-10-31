@@ -2,11 +2,11 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
   gradeID: {
-    type: Number,
+    type: String,
     required: true,
   },
   empID: {
-    type: Number,
+    type: String,
     required: true,
   },
   subjectID: {
@@ -14,15 +14,15 @@ const userSchema = new Schema({
     required: true,
   },
   schoolYear: {
-    type: Number,
+    type: String,
     required: true,
   },
   Level: {
-    type: Number,
+    type: String,
     required: true,
   },
   Grades: {
-    type: Number,
+    type: String,
     required: true,
   },
 });

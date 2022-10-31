@@ -12,6 +12,7 @@ const createNewEmployee = async (req, res) => {
     dateOfBirth,
     civilStatus,
     nationality,
+    religion,
     address,
     city,
     province,
@@ -26,14 +27,14 @@ const createNewEmployee = async (req, res) => {
   } = req.body;
   console.log(empID);
 
-  if (!Number(req.body.empID))
-    return res
-      .status(409)
-      .json({ message: `[${empID}] is not a valid Employee ID` });
-  if (!Number(mobile))
-    return res
-      .status(409)
-      .json({ message: `[${contactNumber}] is not a valid Contact Number` });
+  // if (!Number(req.body.empID))
+  //   return res
+  //     .status(409)
+  //     .json({ message: `[${empID}] is not a valid Employee ID` });
+  // if (!Number(mobile))
+  //   return res
+  //     .status(409)
+  //     .json({ message: `[${contactNumber}] is not a valid Contact Number` });
 
   const duplicate = await Employee.findOne({ empID }).exec();
   if (duplicate) return res.status(409).json({ message: "Duplicate Employee" });
@@ -48,6 +49,7 @@ const createNewEmployee = async (req, res) => {
     gender,
     civilStatus,
     nationality,
+    religion,
     address,
     city,
     province,

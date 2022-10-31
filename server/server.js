@@ -50,7 +50,7 @@ app.use("/", require("./routes/root"));
 // Handle Login Route
 app.use("/auth", require("./routes/auth"));
 
-app.use(verifyJWT);
+// app.use(verifyJWT);
 app.use("/api/users", require("./routes/api/usersRoute"));
 app.use("/api/employees", require("./routes/api/employeesRoute"));
 app.use("/api/students", require("./routes/api/studentsRoute"));

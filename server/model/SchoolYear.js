@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
   schoolYearID: {
-    type: Number,
+    type: String,
     required: true,
   },
   title: {

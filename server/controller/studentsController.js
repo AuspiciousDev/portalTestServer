@@ -8,32 +8,76 @@ const createNewStudent = async (req, res) => {
     middleName,
     lastName,
     suffix,
-    department,
-    email,
-    contactNumber,
+    dateOfBirth,
+    placeOfBirth,
+    gender,
+    civilStatus,
+    nationality,
+    religion,
     address,
+    city,
+    province,
+    email,
+    mobile,
+    telephone,
+    father_firstName,
+    father_middleName,
+    father_lastName,
+    fatherOccupation,
+    fatherContactNum,
+    mother_firstName,
+    mother_middleName,
+    mother_lastName,
+    motherOccupation,
+    motherContactNum,
+    LRN,
+    department,
+    level,
+    emergencyName,
+    relationship,
+    emergencyNumber,
   } = req.body;
   if (
     !studID ||
     !firstName ||
-    !middleName ||
     !lastName ||
-    !suffix ||
-    !department ||
+    !dateOfBirth ||
+    !placeOfBirth ||
+    !gender ||
+    !civilStatus ||
+    !nationality ||
+    !address ||
+    !city ||
+    !province ||
     !email ||
-    !contactNumber ||
-    !address
+    !mobile ||
+    !father_firstName ||
+    !father_middleName ||
+    !father_lastName ||
+    !fatherOccupation ||
+    !fatherContactNum ||
+    !mother_firstName ||
+    !mother_middleName ||
+    !mother_lastName ||
+    !motherOccupation ||
+    !motherContactNum ||
+    !LRN ||
+    !department ||
+    !level ||
+    !emergencyName ||
+    !relationship ||
+    !emergencyNumber
   ) {
     return res.status(400).json({ message: "Incomplete details!" });
   }
-  if (!Number(studID))
-    return res
-      .status(409)
-      .json({ message: `[${studID}] is not a valid Employee ID` });
-  if (!Number(contactNumber))
-    return res
-      .status(409)
-      .json({ message: `[${contactNumber}] is not a valid Contact Number` });
+  // if (!Number(studID))
+  //   return res
+  //     .status(409)
+  //     .json({ message: `[${studID}] is not a valid Employee ID` });
+  // if (!Number(contactNumber))
+  //   return res
+  //     .status(409)
+  //     .json({ message: `[${contactNumber}] is not a valid Contact Number` });
 
   const duplicate = await Student.findOne({ studID }).exec();
   if (duplicate) return res.status(409).json({ message: "Duplicate Student" });
@@ -43,10 +87,34 @@ const createNewStudent = async (req, res) => {
     middleName,
     lastName,
     suffix,
-    department,
-    email,
-    contactNumber,
+    dateOfBirth,
+    placeOfBirth,
+    gender,
+    civilStatus,
+    nationality,
+    religion,
     address,
+    city,
+    province,
+    email,
+    mobile,
+    telephone,
+    father_firstName,
+    father_middleName,
+    father_lastName,
+    fatherOccupation,
+    fatherContactNum,
+    mother_firstName,
+    mother_middleName,
+    mother_lastName,
+    motherOccupation,
+    motherContactNum,
+    LRN,
+    department,
+    level,
+    emergencyName,
+    relationship,
+    emergencyNumber,
   };
   try {
     const empObjectRes = await Student.create(empObject);
