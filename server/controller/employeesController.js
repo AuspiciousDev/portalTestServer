@@ -62,6 +62,8 @@ const createNewEmployee = async (req, res) => {
     relationship,
     emergencyNumber,
   };
+  empObject.map((v) => v.toLowerCase());
+  console.log(empObject);
   try {
     const empObjectRes = await Employee.create(empObject);
     if (!empObjectRes) return res.sendStatus(409);

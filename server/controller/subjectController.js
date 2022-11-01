@@ -1,7 +1,7 @@
 const Subject = require("../model/Subject");
 
 const createDoc = async (req, res) => {
-  const { subjectID, title } = req.body;
+  const { subjectID, subjectLevel, title } = req.body;
   if (!subjectID) {
     return res.status(400).json({ message: "ID is required!" });
   }
@@ -10,7 +10,10 @@ const createDoc = async (req, res) => {
   }).exec();
   if (duplicate) return res.status(409).json({ message: "Duplicate ID!" });
 
-  const docObject = { subjectID, title };
+  const docObject = { subjectID, subjectLevel, title };
+  // docObject.map((v) => v.toLowerCase());
+  console.log(docObject);
+
   try {
     // const empObjectRes = await Employee.create(empObject);
     const response = await Subject.create(docObject);
@@ -29,9 +32,9 @@ const getDocByID = async (req, res) => {
   if (!req?.params?.searchID) {
     return res.status(400).json({ message: "ID is required!" });
   }
-  const response = await Subject.findOne({
-    subjectID: req.params.searchID,
-  }).exec();
+  const subjectID = req?.params?.searchID.toLowerCase();
+  console.log("ID>>", subjectID);
+  const response = await Subject.findOne({ subjectID: subjectID }).exec();
   if (!response) {
     return res
       .status(400)
@@ -44,16 +47,13 @@ const updateDocByID = async (req, res) => {
   if (!req?.params?.searchID) {
     return res.status(400).json({ message: "ID params is required!" });
   }
-
-  const response = await Subject.findOne({
-    subjectID: req.params.searchID,
-  }).exec();
-
+  const subjectID = req.params.searchID.toLowerCase();
+  const response = await Subject.findOne({ subjectID: subjectID }).exec();
   if (!response) {
     return res.status(204).json({ message: "ID required!" });
   }
   const update = await Subject.findOneAndUpdate(
-    { subjectID: req.params.searchID },
+    { subjectID: subjectID },
     {
       ...req.body,
     }
@@ -62,22 +62,22 @@ const updateDocByID = async (req, res) => {
   if (!update) {
     return res.status(400).json({ error: "No record found!" });
   }
-  //const result = await response.save();
   res.json(update);
 };
 const deleteDocByID = async (req, res) => {
   if (!req?.params?.searchID) {
     return res.status(400).json({ message: "ID is required!" });
   }
+  const subjectID = req.params.searchID.toLowerCase();
   const response = await Subject.findOne({
-    subjectID: req.params.searchID,
+    subjectID: subjectID,
   }).exec();
   if (!response) {
     return res
       .status(400)
-      .json({ message: `ID ${req.params.subjectID} not found` });
+      .json({ message: `ID ${req.params.searchID} not found` });
   }
-  const result = await response.deleteOne({ subjectID: req.params.userNum });
+  const result = await response.deleteOne({ subjectID: subjectID });
   res.json(result);
 };
 
