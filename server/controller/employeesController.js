@@ -132,13 +132,13 @@ const deleteEmployeeByID = async (req, res) => {
   if (!req?.params?.empID) {
     return res.status(400).json({ message: "ID required!" });
   }
-  const response = await Employee.findOne({ empID: req.params.empID }).exec();
-  if (!response) {
+  const findID = await Employee.findOne({ empID: req.params.empID }).exec();
+  if (!findID) {
     return res
       .status(400)
       .json({ message: `Employee ID ${req.params.empID} not found` });
   }
-  const result = await response.deleteOne({ empID: req.params.empID });
+  const result = await findID.deleteOne({ empID: req.params.empID });
   res.json(result);
 };
 module.exports = {

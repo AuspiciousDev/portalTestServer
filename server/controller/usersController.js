@@ -25,13 +25,16 @@ const bcrypt = require("bcrypt");
 //   }
 // };
 const getAllUsers = async (req, res) => {
-  const users = await User.find().select("-password").lean();
+  const users = await User.find()
+    .select("-password")
+    .sort({ createdAt: -1 })
+    .lean();
   if (!users) return res.status(204).json({ message: "No Users Found!" });
   res.status(200).json(users);
 };
 
 const createNewUser = async (req, res) => {
-  // Get Request data
+  // Retrieve data
   const { username, roles } = req.body;
 
   // Validate Data if given
@@ -53,7 +56,7 @@ const createNewUser = async (req, res) => {
   if (userCreate) {
     res.status(201).json({ message: `New user ${username} created!` });
   } else {
-    res.status(400).json({ message: "Invalid user Data received!" });
+    res.status(400).json({ message: "Invalid Data received!" });
   }
 };
 

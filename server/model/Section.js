@@ -7,11 +7,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    sectionLevel: {
-      type: String,
-      required: true,
-    },
-    title: {
+    levelID: {
       type: String,
       required: true,
     },

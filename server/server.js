@@ -54,10 +54,15 @@ app.use("/auth", require("./routes/auth"));
 // app.use(verifyJWT);
 
 app.use("/api/users", require("./routes/api/usersRoute"));
-app.use("/api/employees", require("./routes/api/employeesRoute"));
 app.use("/api/students", require("./routes/api/studentsRoute"));
 app.use("/api/grades", require("./routes/api/gradesRoute"));
+app.use("/api/employees", require("./routes/api/employeesRoute"));
 app.use("/api/subjects", require("./routes/api/subjectsRoute"));
+
+app.use("/api/levels", require("./routes/api/levelsRoute"));
+app.use("/api/sections", require("./routes/api/sectionsRoute"));
+app.use("/api/departments", require("./routes/api/departmentRoute"));
+app.use("/api/schoolyears", require("./routes/api/schoolyearRoute"));
 
 app.use(errorHandler);
 
