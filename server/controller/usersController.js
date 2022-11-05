@@ -24,32 +24,59 @@ const bcrypt = require("bcrypt");
 //     console.error(error);
 //   }
 // };
-
-const createNewUser = async (req, res) => {
-  const { empID } = req.body;
-  if (!empID) {
-    return res
-      .status(400)
-      .json({ message: "First and Last names are required!" });
-  }
-  const duplicate = await User.findOne({ username: req.body.empID }).exec();
-  console.log(duplicate);
-  if (duplicate) return res.status(409).json({ message: "Duplicate User!" });
-  const hashedPassword = await bcrypt.hash("12345", 10);
-  //const empObject = { empID, firstName, lastName };
-  const userObject = { username: empID, password: hashedPassword };
-  try {
-    // const empObjectRes = await Employee.create(empObject);
-    const userObjectRes = await User.create(userObject);
-    res.status(201).json({ userObjectRes });
-  } catch (error) {
-    console.error(error);
-  }
-};
 const getAllUsers = async (req, res) => {
-  const users = await User.find();
+  const users = await User.find().select("-password").lean();
   if (!users) return res.status(204).json({ message: "No Users Found!" });
   res.status(200).json(users);
+};
+
+const createNewUser = async (req, res) => {
+  // Get Request data
+  const { username, roles } = req.body;
+
+  // Validate Data if given
+  if (!username || !Array.isArray(roles) || !roles.length) {
+    return res.status(400).json({ message: "All fields are required!" });
+  }
+
+  // Check for Duplicate Username
+  const duplicate = await User.findOne({ username }).lean().exec();
+  if (duplicate) return res.status(409).json({ message: "Duplicate User!" });
+
+  // Hashed the password
+  const hashedPassword = await bcrypt.hash("123", 10);
+
+  const userObject = { username, password: hashedPassword, roles };
+
+  // Create and Store new User
+  const userCreate = await User.create(userObject);
+  if (userCreate) {
+    res.status(201).json({ message: `New user ${username} created!` });
+  } else {
+    res.status(400).json({ message: "Invalid user Data received!" });
+  }
+};
+
+const updateUser = async (req, res) => {
+  // Get Request data
+  const { id, username, roles } = req.body;
+
+  // Validate Data if given
+  if (!username || !Array.isArray(roles) || !roles.length) {
+    return res.status(400).json({ message: "All fields are required!" });
+  }
+
+  // Does the user exist to update?
+  const user = await User.findById(id).exec();
+
+  if (!user) {
+    return res.status(400).json({ message: "User not found" });
+  }
+  user.username = username;
+  user.roles = roles;
+
+  const updatedUser = await user.save();
+  res.json({ message: `${updatedUser.username} updated` });
 };
 
 const getUserByID = async (req, res) => {
@@ -94,8 +121,27 @@ const deleteUserByID = async (req, res) => {
   res.json(result);
 };
 
+const removeUserRoleByID = async (req, res) => {
+  if (!req?.params?.searchID) {
+    return res.status(400).json({ message: "ID params is required!" });
+  }
+  const user = await User.findOne({ username: req.params.userNum }).exec();
+  if (!user) {
+    return res
+      .status(400)
+      .json({ message: `User ID ${req.params.userNum} not found` });
+  }
+  const update = await user.update(
+    { username: req.params.userNum },
+    {
+      $unset: { "incomes.anyKeyNameIWant": "" },
+    }
+  );
+};
+
 module.exports = {
   createNewUser,
+  updateUser,
   getAllUsers,
   getAllUserByRole,
   getUserByID,

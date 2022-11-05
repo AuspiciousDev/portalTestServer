@@ -10,40 +10,35 @@ const handleLogin = async (req, res) => {
       .json({ message: "username and password are required" });
 
   const foundUser = await User.findOne({ username: user }).exec();
-  if (!foundUser) return res.status(401).json({ message: "User not found" }); //Unauth
+  if (!foundUser)
+    return res.status(401).json({ message: "Username not found" }); //Unauth
 
   //evaluate password
   const match = await bcrypt.compare(pwd, foundUser.password);
   if (match) {
-    const role = Object.values(foundUser.role);
+    const roles = Object.values(foundUser.roles).filter(Boolean);
     //create JWTs
     const accessToken = jwt.sign(
       {
         UserInfo: {
           username: foundUser.username,
-          role: role,
+          role: roles,
         },
       },
       process.env.ACCESS_TOKEN_SECRET,
-      {
-        expiresIn: "1800s",
-      }
+      { expiresIn: "1800s" }
     );
     const refreshToken = jwt.sign(
-      {
-        username: foundUser.username,
-      },
+      { username: foundUser.username },
       process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: "1d",
-      }
+      { expiresIn: "1d" }
     );
 
     // Saving RefreshToken with Current User
-
     foundUser.refreshToken = refreshToken;
     const result = await foundUser.save();
     console.log(result);
+    console.log(roles);
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
@@ -52,7 +47,7 @@ const handleLogin = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
     // res.json({ sucess: `Users ${user} is logged in!` });
-    res.json({ accessToken });
+    res.json({ roles, accessToken });
   } else {
     res.status(401).json({ message: "wrong password" });
   }

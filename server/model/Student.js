@@ -115,15 +115,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    level: {
-      type: String,
-      required: true,
-    },
     emergencyName: {
       type: String,
       required: true,
     },
-    relationship: {
+    emergencyRelationship: {
       type: String,
       required: true,
     },

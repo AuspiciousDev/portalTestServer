@@ -1,21 +1,15 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
 const userSchema = new Schema(
   {
-    subjectID: {
-      type: String,
-      required: true,
-    },
-    subjectLevel: {
+    levelID: {
       type: String,
       required: true,
     },
     title: {
       type: String,
       required: true,
-    },
-    description: {
-      type: String,
     },
     active: {
       type: Boolean,
@@ -24,4 +18,4 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("Subject", userSchema);
+module.exports = mongoose.model("Level", userSchema);

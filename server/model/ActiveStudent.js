@@ -1,21 +1,23 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+
 const userSchema = new Schema(
   {
-    subjectID: {
+    schoolYearID: {
       type: String,
       required: true,
     },
-    subjectLevel: {
+    studID: {
       type: String,
       required: true,
     },
-    title: {
+    levelID: {
       type: String,
       required: true,
     },
-    description: {
+    sectionID: {
       type: String,
+      required: true,
     },
     active: {
       type: Boolean,
@@ -24,4 +26,5 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-module.exports = mongoose.model("Subject", userSchema);
+
+module.exports = mongoose.model("ActiveStudent", userSchema);

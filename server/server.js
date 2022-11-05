@@ -27,12 +27,12 @@ app.use(logger);
 app.use(credentials);
 
 // Cross Origin Resource Sharing
-// app.use(cors(corsOptions));
-app.use(
-  cors({
-    origin: "http://localhost:3600",
-  })
-);
+app.use(cors(corsOptions));
+// app.use(
+//   cors({
+//     origin: "http://localhost:3600",
+//   })
+// );
 
 // built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
@@ -50,7 +50,9 @@ app.use("/", require("./routes/root"));
 // Handle Login Route
 app.use("/auth", require("./routes/auth"));
 
+// Require JWT Token to access data
 // app.use(verifyJWT);
+
 app.use("/api/users", require("./routes/api/usersRoute"));
 app.use("/api/employees", require("./routes/api/employeesRoute"));
 app.use("/api/students", require("./routes/api/studentsRoute"));

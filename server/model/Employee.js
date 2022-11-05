@@ -7,6 +7,33 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    department: {
+      type: String,
+      required: true,
+    },
+    position: {
+      type: String,
+      required: true,
+    },
+    SubjectLoads: [
+      {
+        type: String,
+      },
+    ],
+    LevelLoads: [
+      {
+        type: String,
+      },
+    ],
+    SectionLoads: [
+      {
+        type: String,
+      },
+    ],
+    active: {
+      type: Boolean,
+      default: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -67,19 +94,12 @@ const userSchema = new Schema(
     telephone: {
       type: String,
     },
-    department: {
-      type: String,
-      required: true,
-    },
-    position: {
-      type: String,
-      required: true,
-    },
+
     emergencyName: {
       type: String,
       required: true,
     },
-    relationship: {
+    emergencyRelationship: {
       type: String,
       required: true,
     },

@@ -3,6 +3,7 @@ const router = express.Router();
 const usersController = require("../../controller/usersController");
 
 router.get("/", usersController.getAllUsers);
+router.patch("/update", usersController.updateUser);
 router.get("/role", usersController.getAllUserByRole);
 router.get("/search/:userNum", usersController.getUserByID);
 
