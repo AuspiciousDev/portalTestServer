@@ -15,7 +15,7 @@ const userSchema = new Schema(
     },
     active: {
       type: Boolean,
-      required: true,
+      default: false,
     },
   },
   { timestamps: true }

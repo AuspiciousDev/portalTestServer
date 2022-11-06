@@ -8,6 +8,6 @@ router.get("/role", usersController.getAllUserByRole);
 router.get("/search/:userNum", usersController.getUserByID);
 
 router.post("/register", usersController.createNewUser);
-router.delete("/delete/:userNum", usersController.deleteUserByID);
+router.delete("/delete", usersController.deleteDocByID);
 
 module.exports = router;

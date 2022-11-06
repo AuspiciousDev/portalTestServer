@@ -35,7 +35,7 @@ const getAllUsers = async (req, res) => {
 
 const createNewUser = async (req, res) => {
   // Retrieve data
-  const { username, roles } = req.body;
+  const { username, roles, password } = req.body;
 
   // Validate Data if given
   if (!username || !Array.isArray(roles) || !roles.length) {
@@ -47,7 +47,7 @@ const createNewUser = async (req, res) => {
   if (duplicate) return res.status(409).json({ message: "Duplicate User!" });
 
   // Hashed the password
-  const hashedPassword = await bcrypt.hash("123", 10);
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   const userObject = { username, password: hashedPassword, roles };
 
@@ -109,19 +109,18 @@ const getAllUserByRole = async (req, res) => {
     console.error(error);
   }
 };
-const deleteUserByID = async (req, res) => {
-  console.log("test", req.params.userNum);
-  if (!req?.params?.userNum) {
+const deleteDocByID = async (req, res) => {
+  const { username } = req.body;
+  console.log(req.body);
+  if (!username) {
     return res.status(400).json({ message: "ID required!" });
   }
-  const user = await User.findOne({ username: req.params.userNum }).exec();
-  if (!user) {
-    return res
-      .status(400)
-      .json({ message: `User ID ${req.params.userNum} not found` });
+  const findID = await User.findOne({ username }).exec();
+  if (!findID) {
+    return res.status(404).json({ message: `${username} not found!` });
   }
-  const result = await user.deleteOne({ username: req.params.userNum });
-  res.json(result);
+  const deleteItem = await findID.deleteOne({ username });
+  res.status(200).json({ message: `${username} permanently deleted!` });
 };
 
 const removeUserRoleByID = async (req, res) => {
@@ -148,5 +147,5 @@ module.exports = {
   getAllUsers,
   getAllUserByRole,
   getUserByID,
-  deleteUserByID,
+  deleteDocByID,
 };

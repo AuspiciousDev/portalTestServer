@@ -32,9 +32,8 @@ const createNewStudent = async (req, res) => {
     motherContactNum,
     LRN,
     department,
-    level,
     emergencyName,
-    relationship,
+    emergencyRelationship,
     emergencyNumber,
   } = req.body;
   if (
@@ -63,9 +62,8 @@ const createNewStudent = async (req, res) => {
     !motherContactNum ||
     !LRN ||
     !department ||
-    !level ||
     !emergencyName ||
-    !relationship ||
+    !emergencyRelationship ||
     !emergencyNumber
   ) {
     return res.status(400).json({ message: "Incomplete details!" });
@@ -111,9 +109,8 @@ const createNewStudent = async (req, res) => {
     motherContactNum,
     LRN,
     department,
-    level,
     emergencyName,
-    relationship,
+    emergencyRelationship,
     emergencyNumber,
   };
   try {

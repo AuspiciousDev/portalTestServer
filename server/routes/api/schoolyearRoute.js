@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const departmentController = require("../../controller/departmentController");
+const schoolyearController = require("../../controller/schoolyearController");
 
-router.get("/", departmentController.getAllDoc);
-router.patch("/update", departmentController.updateDocByID);
-router.get("/search", departmentController.getDocByID);
-router.post("/register", departmentController.createDoc);
-router.delete("/delete/", departmentController.deleteDocByID);
+router.get("/", schoolyearController.getAllDoc);
+router.patch("/update", schoolyearController.updateDocByID);
+router.get("/search", schoolyearController.getDocByID);
+router.post("/register", schoolyearController.createDoc);
+router.delete("/delete/", schoolyearController.deleteDocByID);
 
 module.exports = router;

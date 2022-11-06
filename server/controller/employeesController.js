@@ -3,13 +3,19 @@ const Employee = require("../model/Employee");
 const createNewEmployee = async (req, res) => {
   const {
     empID,
+    department,
+    position,
+    SubjectLoads,
+    LevelLoads,
+    SectionLoads,
+    active,
     firstName,
     middleName,
     lastName,
     suffix,
+    dateOfBirth,
     placeOfBirth,
     gender,
-    dateOfBirth,
     civilStatus,
     nationality,
     religion,
@@ -19,10 +25,8 @@ const createNewEmployee = async (req, res) => {
     email,
     mobile,
     telephone,
-    department,
-    position,
-    contactName,
-    relationship,
+    emergencyName,
+    emergencyRelationship,
     emergencyNumber,
   } = req.body;
   console.log(empID);
@@ -40,6 +44,12 @@ const createNewEmployee = async (req, res) => {
   if (duplicate) return res.status(409).json({ message: "Duplicate Employee" });
   const empObject = {
     empID,
+    department,
+    position,
+    SubjectLoads,
+    LevelLoads,
+    SectionLoads,
+    active,
     firstName,
     middleName,
     lastName,
@@ -56,14 +66,11 @@ const createNewEmployee = async (req, res) => {
     email,
     mobile,
     telephone,
-    department,
-    position,
-    contactName,
-    relationship,
+    emergencyName,
+    emergencyRelationship,
     emergencyNumber,
   };
-  empObject.map((v) => v.toLowerCase());
-  console.log(empObject);
+
   try {
     const empObjectRes = await Employee.create(empObject);
     if (!empObjectRes) return res.sendStatus(409);

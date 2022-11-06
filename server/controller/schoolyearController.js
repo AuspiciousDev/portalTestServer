@@ -12,7 +12,7 @@ const createDoc = async (req, res) => {
 
   // Validate Data if given
   if (!schoolYearID || !title) {
-    return res.status(400).json({ message: "All Fields are required!" });
+    return res.status(400).json({ message: "All Fields are required!!" });
   }
   // Check for Duplicate Data
   const duplicate = await SchoolYear.findOne({

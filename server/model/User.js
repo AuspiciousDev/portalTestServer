@@ -7,12 +7,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    roles: [
-      {
-        type: Number,
-        default: 1999,
-      },
-    ],
     password: {
       type: String,
       required: true,
@@ -21,6 +15,32 @@ const userSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    middleName: {
+      type: String,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    department: {
+      type: String,
+      required: true,
+    },
+    roles: [
+      {
+        type: Number,
+        default: 1999,
+      },
+    ],
+
     refreshToken: String,
   },
   { timestamps: true }
