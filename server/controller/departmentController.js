@@ -26,11 +26,13 @@ const createDoc = async (req, res) => {
   // Create Object
   const docObject = { departmentID, title, description };
   // Create and Store new Doc
-  const createObj = await Department.create(docObject);
-  if (createObj) {
-    res.status(201).json({ message: `${departmentID}-${title} created!` });
-  } else {
-    res.status(400).json({ message: "Invalid Data received!" });
+  try {
+    // const empObjectRes = await Employee.create(empObject);
+    const response = await Department.create(docObject);
+    res.status(201).json(response);
+  } catch (error) {
+    console.error(error);
+
   }
 };
 const getDocByID = async (req, res) => {
@@ -77,7 +79,7 @@ const deleteDocByID = async (req, res) => {
     return res.status(400).json({ message: `${departmentID} not found!` });
   }
   const deleteItem = await findID.deleteOne({ departmentID });
-  res.json(deleteItem);
+  res.status(201).json(deleteItem);
 };
 
 module.exports = {

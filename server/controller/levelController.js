@@ -5,9 +5,13 @@ const getAllDoc = async (req, res) => {
   if (!doc) return res.status(204).json({ message: "No Data Found!" });
   res.status(200).json(doc);
 };
-
+// >>
+/**
+ * *FRT Working
+ */
 const createDoc = async (req, res) => {
   // Retrieve data
+  console.log(req.body);
   const { levelID, title } = req.body;
 
   // Validate Data if given
@@ -25,11 +29,12 @@ const createDoc = async (req, res) => {
   // Create Object
   const docObject = { levelID, title };
   // Create and Store new Doc
-  const createObj = await Level.create(docObject);
-  if (createObj) {
-    res.status(201).json({ message: `${levelID}-${title} created!` });
-  } else {
-    res.status(400).json({ message: "Invalid Data received!" });
+  try {
+    // const empObjectRes = await Employee.create(empObject);
+    const response = await Level.create(docObject);
+    res.status(201).json(response);
+  } catch (error) {
+    console.error(error);
   }
 };
 const getDocByID = async (req, res) => {
@@ -66,7 +71,12 @@ const updateDocByID = async (req, res) => {
   //const result = await response.save();
   res.json(updateItem);
 };
+
+/**
+ * *FRT Working
+ */
 const deleteDocByID = async (req, res) => {
+  console.log(req.body);
   const { levelID } = req.body;
   if (!levelID) {
     return res.status(400).json({ message: "ID required!" });
@@ -76,7 +86,7 @@ const deleteDocByID = async (req, res) => {
     return res.status(400).json({ message: `${levelID} not found!` });
   }
   const deleteItem = await findID.deleteOne({ levelID });
-  res.json(deleteItem);
+  res.status(200).json(deleteItem);
 };
 
 module.exports = {

@@ -16,7 +16,7 @@ const createDoc = async (req, res) => {
   }
   // Check for Duplicate Data
   const duplicate = await Section.findOne({
-    levelID,
+    sectionID,
   })
     .lean()
     .exec();
@@ -25,11 +25,12 @@ const createDoc = async (req, res) => {
   // Create Object
   const docObject = { sectionID, levelID };
   // Create and Store new Doc
-  const createObj = await Section.create(docObject);
-  if (createObj) {
-    res.status(201).json({ message: `${levelID}-${sectionID} created!` });
-  } else {
-    res.status(400).json({ message: "Invalid Data received!" });
+  try {
+    // const empObjectRes = await Employee.create(empObject);
+    const response = await Section.create(docObject);
+    res.status(201).json(response);
+  } catch (error) {
+    console.error(error);
   }
 };
 const getDocByID = async (req, res) => {
@@ -76,7 +77,7 @@ const deleteDocByID = async (req, res) => {
     return res.status(400).json({ message: `${sectionID} not found!` });
   }
   const deleteItem = await findID.deleteOne({ sectionID });
-  res.json(deleteItem);
+  res.status(201).json(deleteItem);
 };
 
 module.exports = {

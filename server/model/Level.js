@@ -9,7 +9,6 @@ const userSchema = new Schema(
     },
     title: {
       type: String,
-      required: true,
     },
     active: {
       type: Boolean,

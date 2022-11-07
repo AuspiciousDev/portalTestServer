@@ -117,7 +117,7 @@ const createNewStudent = async (req, res) => {
     const empObjectRes = await Student.create(empObject);
     if (!empObjectRes) return res.sendStatus(409);
     console.log(empObjectRes);
-    res.status(201).json({ empObjectRes });
+    res.status(201).json(empObjectRes);
   } catch (error) {
     console.error(error);
   }
