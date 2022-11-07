@@ -5,7 +5,7 @@ const subjectController = require("../../controller/subjectController");
 router.get("/", subjectController.getAllDoc);
 router.get("/search/:searchID", subjectController.getDocByID);
 router.post("/register", subjectController.createDoc);
-router.patch("/update/:searchID", subjectController.updateDocByID);
-router.delete("/delete/:searchID", subjectController.deleteDocByID);
+router.patch("/update", subjectController.updateDocByID);
+router.delete("/delete", subjectController.deleteDocByID);
 
 module.exports = router;

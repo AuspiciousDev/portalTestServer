@@ -65,20 +65,16 @@ const updateDocByID = async (req, res) => {
   res.json(update);
 };
 const deleteDocByID = async (req, res) => {
-  if (!req?.params?.searchID) {
-    return res.status(400).json({ message: "ID is required!" });
+  const { subjectID } = req.body;
+  if (!subjectID) {
+    return res.status(400).json({ message: "ID required!" });
   }
-  const subjectID = req.params.searchID.toLowerCase();
-  const response = await Subject.findOne({
-    subjectID: subjectID,
-  }).exec();
-  if (!response) {
-    return res
-      .status(400)
-      .json({ message: `ID ${req.params.searchID} not found` });
+  const findID = await Subject.findOne({ subjectID }).exec();
+  if (!findID) {
+    return res.status(400).json({ message: `${subjectID} not found!` });
   }
-  const result = await response.deleteOne({ subjectID: subjectID });
-  res.json(result);
+  const deleteItem = await findID.deleteOne({ subjectID });
+  res.json(deleteItem);
 };
 
 module.exports = {
