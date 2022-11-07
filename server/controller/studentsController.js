@@ -31,7 +31,6 @@ const createNewStudent = async (req, res) => {
     motherOccupation,
     motherContactNum,
     LRN,
-    department,
     emergencyName,
     emergencyRelationship,
     emergencyNumber,
@@ -61,7 +60,6 @@ const createNewStudent = async (req, res) => {
     !motherOccupation ||
     !motherContactNum ||
     !LRN ||
-    !department ||
     !emergencyName ||
     !emergencyRelationship ||
     !emergencyNumber
@@ -108,7 +106,6 @@ const createNewStudent = async (req, res) => {
     motherOccupation,
     motherContactNum,
     LRN,
-    department,
     emergencyName,
     emergencyRelationship,
     emergencyNumber,
@@ -164,17 +161,16 @@ const updateStudentByID = async (req, res) => {
 };
 
 const deleteStudentByID = async (req, res) => {
-  if (!req?.params?.studID) {
-    return res.status(400).json({ message: "Student ID required!" });
+  const { studID } = req.body;
+  if (!studID) {
+    return res.status(400).json({ message: "ID required!" });
   }
-  const student = await Student.findOne({ studID: req.params.studID }).exec();
-  if (!student) {
-    return res
-      .status(400)
-      .json({ message: `Student ID ${req.params.id} not found` });
+  const findID = await Student.findOne({ studID }).exec();
+  if (!findID) {
+    return res.status(400).json({ message: `${studID} not found!` });
   }
-  const result = await student.deleteOne({ studID: req.body.studID });
-  res.json(result);
+  const deleteItem = await findID.deleteOne({ studID });
+  res.json(deleteItem);
 };
 
 module.exports = {
