@@ -15,25 +15,7 @@ const userSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    email: {
-      type: String,
-      required: true,
-    },
-    firstName: {
-      type: String,
-      required: true,
-    },
-    middleName: {
-      type: String,
-    },
-    lastName: {
-      type: String,
-      required: true,
-    },
-    department: {
-      type: String,
-      required: true,
-    },
+
     roles: [
       {
         type: Number,

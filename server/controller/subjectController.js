@@ -1,23 +1,25 @@
 const Subject = require("../model/Subject");
 
 const createDoc = async (req, res) => {
-  const { subjectID, subjectLevel, title } = req.body;
+  const { subjectID, levelID, subjectName, description } = req.body;
   if (!subjectID) {
     return res.status(400).json({ message: "ID is required!" });
   }
   const duplicate = await Subject.findOne({
-    subjectID: req.body.subjectID,
-  }).exec();
-  if (duplicate) return res.status(409).json({ message: "Duplicate ID!" });
+    subjectID,
+  })
+    .lean()
+    .exec();
+  if (duplicate) return res.status(409).json({ message: "Duplicate Subject!" });
 
-  const docObject = { subjectID, subjectLevel, title };
+  const docObject = { subjectID, levelID, subjectName, description };
   // docObject.map((v) => v.toLowerCase());
   console.log(docObject);
 
   try {
     // const empObjectRes = await Employee.create(empObject);
     const response = await Subject.create(docObject);
-    res.status(201).json({ response });
+    res.status(201).json(response);
   } catch (error) {
     console.error(error);
   }

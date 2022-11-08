@@ -7,8 +7,13 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    title: {
+    levelNum: {
       type: String,
+      required: true,
+    },
+    departmentID: {
+      type: String,
+      required: true,
     },
     active: {
       type: Boolean,

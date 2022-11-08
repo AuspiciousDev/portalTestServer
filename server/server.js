@@ -63,7 +63,7 @@ app.use("/api/levels", require("./routes/api/levelsRoute"));
 app.use("/api/sections", require("./routes/api/sectionsRoute"));
 app.use("/api/departments", require("./routes/api/departmentRoute"));
 app.use("/api/schoolyears", require("./routes/api/schoolyearRoute"));
-
+app.use("/api/loginhistories", require("./routes/api/loginhistoryRoute"));
 app.use(errorHandler);
 
 app.all("*", (req, res) => {

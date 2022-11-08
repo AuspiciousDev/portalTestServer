@@ -7,11 +7,8 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    department: {
-      type: String,
-      required: true,
-    },
-    position: {
+
+    empType: {
       type: String,
       required: true,
     },

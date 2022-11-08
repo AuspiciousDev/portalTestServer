@@ -35,6 +35,7 @@ const getAllUsers = async (req, res) => {
 
 const createNewUser = async (req, res) => {
   // Retrieve data
+  let defPassword;
   const { username, roles, password } = req.body;
 
   // Validate Data if given
@@ -47,16 +48,21 @@ const createNewUser = async (req, res) => {
   if (duplicate) return res.status(409).json({ message: "Duplicate User!" });
 
   // Hashed the password
-  const hashedPassword = await bcrypt.hash(password, 10);
-
+  if (!password) {
+    defPassword = "P@$$W0RD";
+  } else {
+    defPassword = password;
+  }
+  const hashedPassword = await bcrypt.hash(defPassword, 10);
   const userObject = { username, password: hashedPassword, roles };
 
   // Create and Store new User
-  const userCreate = await User.create(userObject);
-  if (userCreate) {
-    res.status(201).json({ message: `New user ${username} created!` });
-  } else {
-    res.status(400).json({ message: "Invalid Data received!" });
+  try {
+    // const empObjectRes = await Employee.create(empObject);
+    const response = await User.create(userObject);
+    res.status(201).json(response);
+  } catch (error) {
+    console.error(error);
   }
 };
 

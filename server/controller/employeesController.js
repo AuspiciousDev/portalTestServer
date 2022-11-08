@@ -3,8 +3,7 @@ const Employee = require("../model/Employee");
 const createNewEmployee = async (req, res) => {
   const {
     empID,
-    department,
-    position,
+    empType,
     SubjectLoads,
     LevelLoads,
     SectionLoads,
@@ -44,8 +43,7 @@ const createNewEmployee = async (req, res) => {
   if (duplicate) return res.status(409).json({ message: "Duplicate Employee" });
   const empObject = {
     empID,
-    department,
-    position,
+    empType,
     SubjectLoads,
     LevelLoads,
     SectionLoads,
@@ -75,7 +73,7 @@ const createNewEmployee = async (req, res) => {
     const empObjectRes = await Employee.create(empObject);
     if (!empObjectRes) return res.sendStatus(409);
     console.log(empObjectRes);
-    res.status(201).json({ empObjectRes });
+    res.status(201).json(empObjectRes);
   } catch (error) {
     console.error(error);
   }
@@ -135,18 +133,16 @@ const updateEmployeeByID = async (req, res) => {
 };
 
 const deleteEmployeeByID = async (req, res) => {
-  console.log("DELETE :", req.params.empID);
-  if (!req?.params?.empID) {
+  const { empID } = req.body;
+  if (!empID) {
     return res.status(400).json({ message: "ID required!" });
   }
-  const findID = await Employee.findOne({ empID: req.params.empID }).exec();
+  const findID = await Employee.findOne({ empID }).exec();
   if (!findID) {
-    return res
-      .status(400)
-      .json({ message: `Employee ID ${req.params.empID} not found` });
+    return res.status(400).json({ message: `${empID} not found!` });
   }
-  const result = await findID.deleteOne({ empID: req.params.empID });
-  res.json(result);
+  const deleteItem = await findID.deleteOne({ empID });
+  res.json(deleteItem);
 };
 module.exports = {
   getAllEmployees,

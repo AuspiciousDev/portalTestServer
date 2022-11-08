@@ -6,11 +6,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    subjectLevel: {
+    levelID: {
       type: String,
       required: true,
     },
-    title: {
+    subjectName: {
       type: String,
       required: true,
     },

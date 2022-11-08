@@ -12,10 +12,10 @@ const getAllDoc = async (req, res) => {
 const createDoc = async (req, res) => {
   // Retrieve data
   console.log(req.body);
-  const { levelID, title } = req.body;
+  const { levelID, levelNum, departmentID } = req.body;
 
   // Validate Data if given
-  if (!levelID || !title) {
+  if (!levelID || !levelNum || !departmentID) {
     return res.status(400).json({ message: "All Fields are required!" });
   }
   // Check for Duplicate Data
@@ -27,7 +27,7 @@ const createDoc = async (req, res) => {
   if (duplicate) return res.status(409).json({ message: "Duplicate Level!" });
 
   // Create Object
-  const docObject = { levelID, title };
+  const docObject = { levelID, levelNum, departmentID };
   // Create and Store new Doc
   try {
     // const empObjectRes = await Employee.create(empObject);

@@ -7,11 +7,18 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    departmentID: {
+      type: String,
+      required: true,
+    },
     levelID: {
       type: String,
       required: true,
     },
-    
+    sectionName: {
+      type: String,
+      required: true,
+    },
     active: {
       type: Boolean,
       default: true,
