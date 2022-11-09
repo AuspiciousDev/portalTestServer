@@ -7,6 +7,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    enrolledID: {
+      type: String,
+      required: true,
+    },
     studID: {
       type: String,
       required: true,
@@ -16,6 +20,10 @@ const userSchema = new Schema(
       required: true,
     },
     sectionID: {
+      type: String,
+      required: true,
+    },
+    departmentID: {
       type: String,
       required: true,
     },

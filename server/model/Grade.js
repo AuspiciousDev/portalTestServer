@@ -16,15 +16,15 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    schoolYear: {
+    schoolYearID: {
       type: String,
       required: true,
     },
-    Quarter: {
+    quarter: {
       type: String,
       required: true,
     },
-    Grade: {
+    grade: {
       type: String,
       required: true,
     },
