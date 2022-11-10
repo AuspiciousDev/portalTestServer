@@ -20,13 +20,32 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    quarter: {
-      type: String,
-      required: true,
+    allGrades: [
+      {
+        quarter1: {
+          type: Number,
+          default: 0,
+        },
+        quarter2: {
+          type: Number,
+          default: 0,
+        },
+        quarter3: {
+          type: Number,
+          default: 0,
+        },
+        quarter4: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
+    finalGrade: {
+      type: Number,
     },
-    grade: {
-      type: String,
-      required: true,
+    remark: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
