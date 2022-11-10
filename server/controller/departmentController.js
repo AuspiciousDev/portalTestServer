@@ -81,10 +81,39 @@ const deleteDocByID = async (req, res) => {
   res.status(201).json(deleteItem);
 };
 
+const toggleActiveById = async (req, res) => {
+  const { departmentID, active } = req.body;
+  if (!departmentID) {
+    return res.status(400).json({ message: "ID required!" });
+  }
+  console.log(req.body);
+  console.log(departmentID.toLowerCase());
+
+  const findID = await Department.findOne({
+    departmentID: departmentID.toLowerCase(),
+  }).exec();
+  if (!findID) {
+    return res.status(400).json({ message: `${departmentID} not found!` });
+  }
+  const updateItem = await Department.findOneAndUpdate(
+    { departmentID: departmentID.toLowerCase() },
+    {
+      active,
+    }
+  );
+
+  if (!updateItem) {
+    return res.status(400).json({ error: "No Department" });
+  }
+  //const result = await response.save();
+  res.json(updateItem);
+};
+
 module.exports = {
   createDoc,
   getAllDoc,
   getDocByID,
   updateDocByID,
   deleteDocByID,
+  toggleActiveById,
 };
