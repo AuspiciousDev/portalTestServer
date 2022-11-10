@@ -49,10 +49,13 @@ app.use("/", express.static(path.join(__dirname, "/public")));
 app.use("/", require("./routes/root"));
 // Handle Login Route
 app.use("/auth", require("./routes/auth"));
+app.use("/refresh", require("./routes/refresh"));
+app.use("/logout", require("./routes/logout"));
+app.use("/api/loginhistories", require("./routes/loginhistoryRoute"));
 
 // Require JWT Token to access data
-// app.use(verifyJWT);
-
+app.use(verifyJWT);
+// jwt protected routes
 app.use("/api/users", require("./routes/api/usersRoute"));
 app.use("/api/students", require("./routes/api/studentsRoute"));
 app.use("/api/grades", require("./routes/api/gradesRoute"));
@@ -64,7 +67,7 @@ app.use("/api/sections", require("./routes/api/sectionsRoute"));
 app.use("/api/departments", require("./routes/api/departmentRoute"));
 app.use("/api/schoolyears", require("./routes/api/schoolyearRoute"));
 app.use("/api/activestudents", require("./routes/api/activeStudentRoute"));
-app.use("/api/loginhistories", require("./routes/api/loginhistoryRoute"));
+
 app.use(errorHandler);
 
 app.all("*", (req, res) => {

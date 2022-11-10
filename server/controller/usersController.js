@@ -26,7 +26,7 @@ const bcrypt = require("bcrypt");
 // };
 const getAllUsers = async (req, res) => {
   const users = await User.find()
-    .select("-password")
+    // .select("-password")
     .sort({ createdAt: -1 })
     .lean();
   if (!users) return res.status(204).json({ message: "No Users Found!" });
