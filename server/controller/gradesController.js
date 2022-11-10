@@ -3,33 +3,27 @@ const Grade = require("../model/Grade");
 const getAllDoc = async (req, res) => {
   const doc = await Grade.find().sort({ createdAt: -1 }).lean();
   if (!doc) return res.status(204).json({ message: "No Data Found!" });
+  console.log(doc);
   res.status(200).json(doc);
 };
 
 const createDoc = async (req, res) => {
   // Retrieve data
-  const { studID, empID, subjectID, schoolYearID, quarter, grade } = req.body;
-
+  const { studID, empID, subjectID, schoolYearID, allGrades } = req.body;
+  console.log(req.body);
   // Validate Data if given
-  if (!studID || !empID || !subjectID || !schoolYearID || !quarter || !grade) {
+  if (!studID || !empID || !subjectID || !schoolYearID || !allGrades) {
     return res.status(400).json({ message: "All Fields are required!" });
   }
-  // Check for Duplicate Data
-  //   const duplicate = await Department.findOne({
-  //     departmentID,
-  //   })
-  //     .lean()
-  //     .exec();
-  //   if (duplicate)
-  //     return res.status(409).json({ message: "Duplicate Department!" });
-
+  console.log({ allGrades });
   // Create Object
-  const docObject = { studID, empID, subjectID, schoolYearID, quarter, grade };
+  const docObject = { studID, empID, subjectID, schoolYearID, allGrades };
   // Create and Store new Doc
   try {
     // const empObjectRes = await Employee.create(empObject);
     const response = await Grade.create(docObject);
     res.status(201).json(response);
+    console.log(response);
   } catch (error) {
     console.error(error);
   }
