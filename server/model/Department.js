@@ -14,7 +14,7 @@ const userSchema = new Schema(
     description: {
       type: String,
     },
-    active: {
+    status: {
       type: Boolean,
       default: true,
     },

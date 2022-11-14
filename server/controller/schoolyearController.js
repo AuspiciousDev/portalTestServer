@@ -8,12 +8,12 @@ const getAllDoc = async (req, res) => {
 
 const createDoc = async (req, res) => {
   // Retrieve data
-  const { schoolYearID, title, description } = req.body;
+  const { schoolYearID, schoolYear, description } = req.body;
+
   // Validate Data if given
-  if (!schoolYearID || !title) {
-    return res.status(400).json({ message: "All Fields are required!!title" });
+  if (!schoolYearID || !schoolYear) {
+    return res.status(400).json({ message: "All Fields are required!" });
   }
-  // Check for Duplicate Data
   const duplicate = await SchoolYear.findOne({
     schoolYearID,
   })
@@ -24,22 +24,29 @@ const createDoc = async (req, res) => {
       .status(409)
       .json({ message: `Duplicate School Year ${schoolYearID}!` });
 
-  // Create Object
-  const docObject = { schoolYearID, title, description };
-  // Create and Store new Doc
-  // const createObj = await SchoolYear.create(docObject);
-  // if (createObj) {
-  //   res.status(201).json({ message: `${schoolYearID}-${title} created!` });
-  // } else {
-  //   res.status(400).json({ message: "Invalid Data received!" });
-  // }
+  const findActive = await SchoolYear.findOne({ status: true }).exec();
+  console.log("findActive : ", findActive);
+  if (!findActive) {
+    // Check for Duplicate Data
 
-  try {
-    // const empObjectRes = await Employee.create(empObject);
-    const response = await SchoolYear.create(docObject);
-    res.status(201).json(response);
-  } catch (error) {
-    console.error(error);
+    // Create Object
+    const docObject = { schoolYearID, schoolYear, description };
+
+    try {
+      const response = await SchoolYear.create(docObject);
+      res.status(201).json(response);
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    return (
+      res.status(400).json({
+        message: `School Year ${findActive.schoolYearID} is still active!`,
+      }),
+      console.log(
+        `School Year : School Year ${findActive.schoolYearID} is still active!`
+      )
+    );
   }
 };
 const getDocByID = async (req, res) => {
@@ -71,27 +78,12 @@ const updateDocByID = async (req, res) => {
   );
 
   if (!updateItem) {
-    return res.status(400).json({ error: "No Department" });
+    return res.status(400).json({ error: "No School Year" });
   }
   //const result = await response.save();
   res.json(updateItem);
 };
-const findActiveSchoolYear = async (req, res) => {
-  const { schoolYearID, active } = req.body;
-  if (!schoolYearID) {
-    return res.status(400).json({ message: "ID required!" });
-  }
 
-  const findActive = await SchoolYear.find({ active: true }).exec();
-  console.log(findActive);
-  if (findActive.length === 0) {
-    return res.status(400).json({ message: `Nothing is active!` });
-  } else {
-    return res
-      .status(400)
-      .json({ message: `${findActive[0].schoolYearID} is still active!` });
-  }
-};
 const deleteDocByID = async (req, res) => {
   const { schoolYearID } = req.body;
   if (!schoolYearID) {
@@ -105,11 +97,53 @@ const deleteDocByID = async (req, res) => {
   res.json(deleteItem);
 };
 
+const toggleStatusById = async (req, res) => {
+  const { schoolYearID, status } = req.body;
+  if (!schoolYearID) {
+    return res.status(400).json({ message: "ID required!" });
+  }
+  console.log("Request : ", req.body);
+
+  const findActive = await SchoolYear.findOne({ status: true }).exec();
+  console.log("findActive : ", findActive);
+  if (!findActive) {
+    const updateItem = await SchoolYear.findOneAndUpdate(
+      { schoolYearID },
+      {
+        status,
+      }
+    );
+    //const result = await response.save();
+    res.json(updateItem);
+  } else {
+    if (findActive.schoolYearID === schoolYearID) {
+      console.log(`New Active School Year : ${schoolYearID}`);
+      const updateItem = await SchoolYear.findOneAndUpdate(
+        { schoolYearID },
+        {
+          status,
+        }
+      );
+      //const result = await response.save();
+      res.status(200).json(updateItem);
+    } else {
+      return (
+        res.status(400).json({
+          message: `School Year ${findActive.schoolYearID} is still active!`,
+        }),
+        console.log(
+          `School Year : School Year ${findActive.schoolYearID} is still active!`
+        )
+      );
+    }
+  }
+};
+
 module.exports = {
   createDoc,
   getAllDoc,
   getDocByID,
   updateDocByID,
-  findActiveSchoolYear,
   deleteDocByID,
+  toggleStatusById,
 };

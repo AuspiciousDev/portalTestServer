@@ -9,15 +9,34 @@ const getAllDoc = async (req, res) => {
 
 const createDoc = async (req, res) => {
   // Retrieve data
-  const { studID, empID, subjectID, schoolYearID, allGrades } = req.body;
+  let remarkA;
+  const { studID, empID, subjectID, schoolYearID, allGrades, remark } =
+    req.body;
   console.log(req.body);
   // Validate Data if given
   if (!studID || !empID || !subjectID || !schoolYearID || !allGrades) {
     return res.status(400).json({ message: "All Fields are required!" });
   }
+  const duplicate = await Grade.findOne({
+    studID,
+    schoolYearID,
+    subjectID,
+  })
+    .lean()
+    .exec();
+  if (duplicate) return res.status(409).json({ message: "Duplicate Grade!" });
+
+  remark === "passed" ? (remarkA = true) : (remarkA = false);
   console.log({ allGrades });
   // Create Object
-  const docObject = { studID, empID, subjectID, schoolYearID, allGrades };
+  const docObject = {
+    studID,
+    empID,
+    subjectID,
+    schoolYearID,
+    allGrades,
+    remark: remarkA,
+  };
   // Create and Store new Doc
   try {
     // const empObjectRes = await Employee.create(empObject);

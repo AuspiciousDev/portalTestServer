@@ -6,16 +6,16 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    title: {
+    schoolYear: {
       type: String,
       required: true,
     },
     description: {
       type: String,
     },
-    active: {
+    status: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   { timestamps: true }

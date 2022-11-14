@@ -81,8 +81,8 @@ const deleteDocByID = async (req, res) => {
   res.status(201).json(deleteItem);
 };
 
-const toggleActiveById = async (req, res) => {
-  const { departmentID, active } = req.body;
+const toggleStatusById = async (req, res) => {
+  const { departmentID, status } = req.body;
   if (!departmentID) {
     return res.status(400).json({ message: "ID required!" });
   }
@@ -98,7 +98,7 @@ const toggleActiveById = async (req, res) => {
   const updateItem = await Department.findOneAndUpdate(
     { departmentID: departmentID.toLowerCase() },
     {
-      active,
+      status,
     }
   );
 
@@ -115,5 +115,5 @@ module.exports = {
   getDocByID,
   updateDocByID,
   deleteDocByID,
-  toggleActiveById,
+  toggleStatusById,
 };

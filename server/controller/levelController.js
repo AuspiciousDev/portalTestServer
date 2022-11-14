@@ -89,10 +89,39 @@ const deleteDocByID = async (req, res) => {
   res.status(200).json(deleteItem);
 };
 
+const toggleActiveById = async (req, res) => {
+  const { levelID, active } = req.body;
+  if (!levelID) {
+    return res.status(400).json({ message: "ID required!" });
+  }
+  console.log(req.body);
+  console.log(levelID.toLowerCase());
+
+  const findID = await Level.findOne({
+    levelID: levelID.toLowerCase(),
+  }).exec();
+  if (!findID) {
+    return res.status(400).json({ message: `${levelID} not found!` });
+  }
+  const updateItem = await Level.findOneAndUpdate(
+    { levelID: levelID.toLowerCase() },
+    {
+      active,
+    }
+  );
+
+  if (!updateItem) {
+    return res.status(400).json({ error: "No School Year" });
+  }
+  //const result = await response.save();
+  res.json(updateItem);
+};
+
 module.exports = {
   createDoc,
   getAllDoc,
   getDocByID,
   updateDocByID,
   deleteDocByID,
+  toggleActiveById,
 };
