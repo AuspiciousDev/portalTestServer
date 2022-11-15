@@ -1,4 +1,5 @@
 const Department = require("../model/Department");
+const Level = require("../model/Level");
 
 const getAllDoc = async (req, res) => {
   const doc = await Department.find().sort({ createdAt: -1 }).lean();
@@ -95,18 +96,28 @@ const toggleStatusById = async (req, res) => {
   if (!findID) {
     return res.status(400).json({ message: `${departmentID} not found!` });
   }
-  const updateItem = await Department.findOneAndUpdate(
+  const updateDep = await Department.findOneAndUpdate(
     { departmentID: departmentID.toLowerCase() },
     {
       status,
     }
   );
-
-  if (!updateItem) {
-    return res.status(400).json({ error: "No Department" });
+  if (status === false) {
+    const updateLev = await Level.updateMany(
+      { departmentID: { $in: departmentID.toLowerCase() } },
+      { $set: { status: status } }
+    );
+    if (!updateLev) {
+      return res.status(400).json({ message: "No Level" });
+    }
   }
+
+  if (!updateDep) {
+    return res.status(400).json({ message: "No Department" });
+  }
+
   //const result = await response.save();
-  res.json(updateItem);
+  res.json(updateDep);
 };
 
 module.exports = {

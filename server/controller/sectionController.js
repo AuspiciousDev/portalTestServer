@@ -79,11 +79,39 @@ const deleteDocByID = async (req, res) => {
   const deleteItem = await findID.deleteOne({ sectionID });
   res.status(201).json(deleteItem);
 };
+const toggleStatusById = async (req, res) => {
+  console.log(req.body);
+  const { sectionID, status } = req.body;
+  if (!sectionID) {
+    return res.status(400).json({ message: "ID required!" });
+  }
+  console.log(req.body);
+  console.log(sectionID.toLowerCase());
 
+  const findID = await Section.findOne({
+    sectionID: sectionID.toLowerCase(),
+  }).exec();
+  if (!findID) {
+    return res.status(400).json({ message: `${sectionID} not found!` });
+  }
+  const updateItem = await Section.findOneAndUpdate(
+    { sectionID: sectionID.toLowerCase() },
+    {
+      status,
+    }
+  );
+
+  if (!updateItem) {
+    return res.status(400).json({ message: "No Department" });
+  }
+  //const result = await response.save();
+  res.json(updateItem);
+};
 module.exports = {
   createDoc,
   getAllDoc,
   getDocByID,
   updateDocByID,
   deleteDocByID,
+  toggleStatusById,
 };

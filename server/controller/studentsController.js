@@ -2,67 +2,28 @@ const Student = require("../model/Student");
 const bcrypt = require("bcrypt");
 
 const createNewStudent = async (req, res) => {
+  console.log("New Student :", req.body);
   const {
     studID,
+    LRN,
     firstName,
     middleName,
     lastName,
     suffix,
     dateOfBirth,
-    placeOfBirth,
     gender,
-    civilStatus,
-    nationality,
-    religion,
-    address,
-    city,
-    province,
     email,
-    mobile,
-    telephone,
-    father_firstName,
-    father_middleName,
-    father_lastName,
-    fatherOccupation,
-    fatherContactNum,
-    mother_firstName,
-    mother_middleName,
-    mother_lastName,
-    motherOccupation,
-    motherContactNum,
-    LRN,
-    emergencyName,
-    emergencyRelationship,
-    emergencyNumber,
   } = req.body;
+
+  console.log(studID);
   if (
     !studID ||
+    !LRN ||
     !firstName ||
     !lastName ||
     !dateOfBirth ||
-    !placeOfBirth ||
     !gender ||
-    !civilStatus ||
-    !nationality ||
-    !address ||
-    !city ||
-    !province ||
-    !email ||
-    !mobile ||
-    !father_firstName ||
-    !father_middleName ||
-    !father_lastName ||
-    !fatherOccupation ||
-    !fatherContactNum ||
-    !mother_firstName ||
-    !mother_middleName ||
-    !mother_lastName ||
-    !motherOccupation ||
-    !motherContactNum ||
-    !LRN ||
-    !emergencyName ||
-    !emergencyRelationship ||
-    !emergencyNumber
+    !email
   ) {
     return res.status(400).json({ message: "Incomplete details!" });
   }
@@ -78,37 +39,15 @@ const createNewStudent = async (req, res) => {
   const duplicate = await Student.findOne({ studID }).exec();
   if (duplicate) return res.status(409).json({ message: "Duplicate Student" });
   const empObject = {
-    studID,
-    firstName,
-    middleName,
-    lastName,
-    suffix,
-    dateOfBirth,
-    placeOfBirth,
-    gender,
-    civilStatus,
-    nationality,
-    religion,
-    address,
-    city,
-    province,
-    email,
-    mobile,
-    telephone,
-    father_firstName,
-    father_middleName,
-    father_lastName,
-    fatherOccupation,
-    fatherContactNum,
-    mother_firstName,
-    mother_middleName,
-    mother_lastName,
-    motherOccupation,
-    motherContactNum,
-    LRN,
-    emergencyName,
-    emergencyRelationship,
-    emergencyNumber,
+    studID: studID.toLowerCase(),
+    LRN: LRN.toLowerCase(),
+    firstName: firstName.toLowerCase(),
+    middleName: middleName.toLowerCase(),
+    lastName: lastName.toLowerCase(),
+    suffix: suffix.toLowerCase(),
+    dateOfBirth: dateOfBirth.toLowerCase(),
+    gender: gender.toLowerCase(),
+    email: email.toLowerCase(),
   };
   try {
     const empObjectRes = await Student.create(empObject);

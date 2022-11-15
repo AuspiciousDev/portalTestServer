@@ -1,5 +1,6 @@
 const User = require("../model/User");
 const Employee = require("../model/Employee");
+const Student = require("../model/Student");
 const bcrypt = require("bcrypt");
 // const createNewUser = async (req, res) => {
 //   const { username, password, roles } = req.body;
@@ -36,11 +37,22 @@ const getAllUsers = async (req, res) => {
 const createNewUser = async (req, res) => {
   // Retrieve data
   let defPassword;
+  let verify;
   const { username, roles, password } = req.body;
-
+  console.log(username, roles, password);
   // Validate Data if given
+
   if (!username || !Array.isArray(roles) || !roles.length) {
     return res.status(400).json({ message: "All fields are required!" });
+  }
+  if (roles.includes("2001" || "2002")) {
+    verify = await Employee.findOne({ empID: username }).lean().exec();
+  } else if (roles.includes("2003")) {
+    verify = await Student.findOne({ studID: username }).lean().exec();
+  } else {
+    return res
+      .status(409)
+      .json({ message: `Username [${username}] not found! ` });
   }
 
   // Check for Duplicate Username

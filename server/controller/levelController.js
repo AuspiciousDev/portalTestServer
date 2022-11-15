@@ -1,4 +1,5 @@
 const Level = require("../model/Level");
+const Section = require("../model/Section");
 
 const getAllDoc = async (req, res) => {
   const doc = await Level.find().sort({ createdAt: -1 }).lean();
@@ -72,9 +73,6 @@ const updateDocByID = async (req, res) => {
   res.json(updateItem);
 };
 
-/**
- * *FRT Working
- */
 const deleteDocByID = async (req, res) => {
   console.log(req.body);
   const { levelID } = req.body;
@@ -89,8 +87,8 @@ const deleteDocByID = async (req, res) => {
   res.status(200).json(deleteItem);
 };
 
-const toggleActiveById = async (req, res) => {
-  const { levelID, active } = req.body;
+const toggleStatusById = async (req, res) => {
+  const { levelID, status } = req.body;
   if (!levelID) {
     return res.status(400).json({ message: "ID required!" });
   }
@@ -106,12 +104,21 @@ const toggleActiveById = async (req, res) => {
   const updateItem = await Level.findOneAndUpdate(
     { levelID: levelID.toLowerCase() },
     {
-      active,
+      status,
     }
   );
+  if (status === false) {
+    const updateLev = await Section.updateMany(
+      { levelID: { $in: levelID.toLowerCase() } },
+      { $set: { status: status } }
+    );
+    if (!updateLev) {
+      return res.status(400).json({ message: "No Level" });
+    }
+  }
 
   if (!updateItem) {
-    return res.status(400).json({ error: "No School Year" });
+    return res.status(400).json({ message: "No School Year" });
   }
   //const result = await response.save();
   res.json(updateItem);
@@ -123,5 +130,5 @@ module.exports = {
   getDocByID,
   updateDocByID,
   deleteDocByID,
-  toggleActiveById,
+  toggleStatusById,
 };

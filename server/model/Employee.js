@@ -8,10 +8,12 @@ const userSchema = new Schema(
       required: true,
     },
 
-    empType: {
-      type: String,
-      required: true,
-    },
+    empType: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     SubjectLoads: [
       {
         type: String,
@@ -27,7 +29,7 @@ const userSchema = new Schema(
         type: String,
       },
     ],
-    active: {
+    status: {
       type: Boolean,
       default: true,
     },
@@ -42,14 +44,8 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    suffix: {
-      type: String,
-    },
+
     dateOfBirth: {
-      type: String,
-      required: true,
-    },
-    placeOfBirth: {
       type: String,
       required: true,
     },
@@ -57,52 +53,49 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    civilStatus: {
+    email: {
       type: String,
       required: true,
     },
+    placeOfBirth: {
+      type: String,
+    },
+    suffix: {
+      type: String,
+    },
+    civilStatus: {
+      type: String,
+    },
     nationality: {
       type: String,
-      required: true,
     },
     religion: {
       type: String,
     },
     address: {
       type: String,
-      required: true,
     },
     city: {
       type: String,
-      required: true,
     },
     province: {
       type: String,
-      required: true,
     },
-    email: {
-      type: String,
-      required: true,
-    },
+
     mobile: {
       type: String,
-      required: true,
     },
     telephone: {
       type: String,
     },
-
     emergencyName: {
       type: String,
-      required: true,
     },
     emergencyRelationship: {
       type: String,
-      required: true,
     },
     emergencyNumber: {
       type: String,
-      required: true,
     },
     refreshToken: String,
   },

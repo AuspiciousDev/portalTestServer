@@ -43,7 +43,7 @@ const createNewEmployee = async (req, res) => {
   if (duplicate) return res.status(409).json({ message: "Duplicate Employee" });
   const empObject = {
     empID,
-    empType,
+    empType: empType.types,
     SubjectLoads,
     LevelLoads,
     SectionLoads,
@@ -68,10 +68,11 @@ const createNewEmployee = async (req, res) => {
     emergencyRelationship,
     emergencyNumber,
   };
-
+  console.log(empObject);
   try {
     const empObjectRes = await Employee.create(empObject);
-    if (!empObjectRes) return res.sendStatus(409);
+    if (!empObjectRes)
+      return res.status(400).json({ message: "Cannot create employee!" });
     console.log(empObjectRes);
     res.status(201).json(empObjectRes);
   } catch (error) {

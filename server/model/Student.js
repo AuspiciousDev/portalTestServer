@@ -7,6 +7,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    LRN: {
+      type: String,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -18,14 +22,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    suffix: {
-      type: String,
-    },
     dateOfBirth: {
-      type: String,
-      required: true,
-    },
-    placeOfBirth: {
       type: String,
       required: true,
     },
@@ -33,95 +30,38 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    civilStatus: {
-      type: String,
-      required: true,
-    },
-    nationality: {
-      type: String,
-      required: true,
-    },
-    religion: {
-      type: String,
-    },
-    address: {
-      type: String,
-      required: true,
-    },
-    city: {
-      type: String,
-      required: true,
-    },
-    province: {
-      type: String,
-      required: true,
-    },
     email: {
       type: String,
       required: true,
     },
+    suffix: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    province: {
+      type: String,
+    },
+
     mobile: {
-      type: String,
-      required: true,
-    },
-    telephone: {
-      type: String,
-      required: true,
-    },
-    father_firstName: {
-      type: String,
-      required: true,
-    },
-    father_middleName: {
-      type: String,
-      required: true,
-    },
-    father_lastName: {
-      type: String,
-      required: true,
-    },
-    fatherOccupation: {
-      type: String,
-      required: true,
-    },
-    fatherContactNum: {
-      type: String,
-      required: true,
-    },
-    mother_firstName: {
-      type: String,
-      required: true,
-    },
-    mother_middleName: {
-      type: String,
-      required: true,
-    },
-    mother_lastName: {
-      type: String,
-      required: true,
-    },
-    motherOccupation: {
-      type: String,
-      required: true,
-    },
-    motherContactNum: {
-      type: String,
-      required: true,
-    },
-    LRN: {
       type: String,
     },
     emergencyName: {
       type: String,
-      required: true,
     },
     emergencyRelationship: {
       type: String,
-      required: true,
     },
     emergencyNumber: {
       type: String,
-      required: true,
+    },
+    status: {
+      type: Boolean,
+      default: true,
     },
     refreshToken: String,
   },
