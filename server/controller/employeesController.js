@@ -41,6 +41,10 @@ const createNewEmployee = async (req, res) => {
 
   const duplicate = await Employee.findOne({ empID }).exec();
   if (duplicate) return res.status(409).json({ message: "Duplicate Employee" });
+
+  const duplicateEmail = await Employee.findOne({ email }).exec();
+  if (duplicateEmail)
+    return res.status(409).json({ message: "Duplicate Email" });
   const empObject = {
     empID,
     empType: empType.types,

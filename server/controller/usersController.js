@@ -37,7 +37,7 @@ const getAllUsers = async (req, res) => {
 const createNewUser = async (req, res) => {
   // Retrieve data
   let defPassword;
-  let verify;
+  let verifyUserExists;
   const { username, roles, password } = req.body;
   console.log(username, roles, password);
   // Validate Data if given
@@ -46,19 +46,29 @@ const createNewUser = async (req, res) => {
     return res.status(400).json({ message: "All fields are required!" });
   }
   if (roles.includes("2001" || "2002")) {
-    verify = await Employee.findOne({ empID: username }).lean().exec();
+    verifyUserExists = await Employee.findOne({ empID: username })
+      .lean()
+      .exec();
   } else if (roles.includes("2003")) {
-    verify = await Student.findOne({ studID: username }).lean().exec();
-  } else {
+    verifyUserExists = await Student.findOne({ studID: username })
+      .lean()
+      .exec();
+  }
+  console.log(verifyUserExists);
+  if (
+    verifyUserExists ||
+    verifyUserExists === null ||
+    verifyUserExists === undefined
+  )
     return res
       .status(409)
-      .json({ message: `Username [${username}] not found! ` });
-  }
+      .json({ message: `Username ${username} does not exists!` });
 
   // Check for Duplicate Username
   const duplicate = await User.findOne({ username }).lean().exec();
-  if (duplicate) return res.status(409).json({ message: "Duplicate User!" });
-
+  if (duplicate) {
+    return res.status(409).json({ message: "Duplicate user!" });
+  }
   // Hashed the password
   if (!password) {
     defPassword = "P@$$W0RD";

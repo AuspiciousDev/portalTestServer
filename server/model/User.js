@@ -19,7 +19,7 @@ const userSchema = new Schema(
     roles: [
       {
         type: Number,
-        default: 1999,
+        required: true,
       },
     ],
 

@@ -10,7 +10,7 @@ const userSchema = new Schema(
 
     empType: [
       {
-        type: String,
+        type: Number,
         required: true,
       },
     ],
