@@ -1,14 +1,15 @@
 const mongoose = require("mongoose");
-const AutoIncrement = require("mongoose-sequence")(mongoose);
-
 const Schema = mongoose.Schema;
+
 const userSchema = new Schema(
   {
-    studID: {
-      type: String,
+    taskID: {
+      type: mongoose.Schema.Types.ObjectId,
+      index: true,
       required: true,
+      auto: true,
     },
-    empID: {
+    taskType: {
       type: String,
       required: true,
     },
@@ -16,24 +17,26 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    schoolYearID: {
+    studID: {
       type: String,
       required: true,
     },
-    quarter: {
+    taskScore: {
       type: Number,
       required: true,
     },
-    grade: {
+    taskTotalScore: {
       type: Number,
       required: true,
+    },
+    createdBy: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
     },
   },
   { timestamps: true }
 );
-// userSchema.plugin(AutoIncrement, {
-//   inc_field: "gradeID",
-//   id: "gradeNums",
-//   start_seq: 1000,
-// });
-module.exports = mongoose.model("Grade", userSchema);
+module.exports = mongoose.model("Task", userSchema);

@@ -6,6 +6,7 @@ router.get("/", employeesController.getAllEmployees);
 router.get("/search/:empID", employeesController.getEmployeeByID);
 router.post("/register", employeesController.createNewEmployee);
 router.patch("/update/:empID", employeesController.updateEmployeeByID);
+router.patch("/status", employeesController.toggleStatusById);
 router.delete("/delete", employeesController.deleteEmployeeByID);
 
 module.exports = router;

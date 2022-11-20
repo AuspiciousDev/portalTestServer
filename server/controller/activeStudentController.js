@@ -1,5 +1,5 @@
-const ActiveStudent = require("../model/ActiveStudent");
-
+const ActiveStudent = require("../model/Enrolled");
+const Student = require("../model/Student");
 const getAllDoc = async (req, res) => {
   const doc = await ActiveStudent.find().sort({ createdAt: -1 }).lean();
   if (!doc) return res.status(204).json({ message: "No Data Found!" });
@@ -7,12 +7,19 @@ const getAllDoc = async (req, res) => {
 };
 const createDoc = async (req, res) => {
   // Retrieve data
-  const { enrolledID, schoolYearID, studID, levelID, sectionID, departmentID } =
-    req.body;
+  const {
+    enrollmentID,
+    schoolYearID,
+    studID,
+    levelID,
+    sectionID,
+    departmentID,
+  } = req.body;
 
+  console.log("New Enrollee: ", req.body);
   // Validate Data if given
   if (
-    !enrolledID ||
+    !enrollmentID ||
     !schoolYearID ||
     !studID ||
     !levelID ||
@@ -23,16 +30,22 @@ const createDoc = async (req, res) => {
   }
   // Check for Duplicate Data
   const duplicate = await ActiveStudent.findOne({
-    enrolledID,
+    studID: studID,
+    schoolYearID: schoolYearID,
   })
     .lean()
     .exec();
   if (duplicate)
     return res.status(409).json({ message: "Duplicate Enrollee!" });
-
+  const isActive = await Student.findOne({
+    studID: studID,
+    status: false,
+  });
+  if (isActive)
+    return res.status(409).json({ message: "Student not Active!" });
   // Create Object
   const docObject = {
-    enrolledID,
+    enrolledID: enrollmentID,
     schoolYearID,
     studID,
     levelID,

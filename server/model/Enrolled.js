@@ -27,7 +27,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    active: {
+    status: {
       type: Boolean,
       default: true,
     },
@@ -35,4 +35,4 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("ActiveStudent", userSchema);
+module.exports = mongoose.model("Enrolled", userSchema);

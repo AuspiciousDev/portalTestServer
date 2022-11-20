@@ -149,10 +149,39 @@ const deleteEmployeeByID = async (req, res) => {
   const deleteItem = await findID.deleteOne({ empID });
   res.json(deleteItem);
 };
+const toggleStatusById = async (req, res) => {
+  console.log(req.body);
+  const { empID, status } = req.body;
+  if (!empID) {
+    return res.status(400).json({ message: "ID required!" });
+  }
+  console.log(req.body);
+  console.log(empID.toLowerCase());
+
+  const findID = await Employee.findOne({
+    empID: empID.toLowerCase(),
+  }).exec();
+  if (!findID) {
+    return res.status(400).json({ message: `${empID} not found!` });
+  }
+  const updateItem = await Employee.findOneAndUpdate(
+    { empID: empID.toLowerCase() },
+    {
+      status,
+    }
+  );
+
+  if (!updateItem) {
+    return res.status(400).json({ message: "No Employee" });
+  }
+  //const result = await response.save();
+  res.json(updateItem);
+};
 module.exports = {
   getAllEmployees,
   createNewEmployee,
   getEmployeeByID,
   updateEmployeeByID,
   deleteEmployeeByID,
+  toggleStatusById,
 };

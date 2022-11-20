@@ -1,4 +1,5 @@
 const SchoolYear = require("../model/SchoolYear");
+const ActiveStudent = require("../model/Enrolled");
 
 const getAllDoc = async (req, res) => {
   const doc = await SchoolYear.find().sort({ schoolYearID: -1 }).lean();
@@ -125,6 +126,15 @@ const toggleStatusById = async (req, res) => {
         }
       );
       //const result = await response.save();
+      if (status === false) {
+        const updateLev = await ActiveStudent.updateMany(
+          { schoolYearID: { $in: schoolYearID.toLowerCase() } },
+          { $set: { status: status } }
+        );
+        if (!updateLev) {
+          return res.status(400).json({ message: "No Level" });
+        }
+      }
       res.status(200).json(updateItem);
     } else {
       return (

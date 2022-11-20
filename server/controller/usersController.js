@@ -54,9 +54,9 @@ const createNewUser = async (req, res) => {
       .lean()
       .exec();
   }
-  console.log(verifyUserExists);
+  console.log("Verify User Exists :", verifyUserExists);
   if (
-    verifyUserExists ||
+    !verifyUserExists ||
     verifyUserExists === null ||
     verifyUserExists === undefined
   )
