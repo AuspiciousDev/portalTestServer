@@ -40,13 +40,7 @@ const userSchema = new Schema(
         },
       },
     ],
-    finalGrade: {
-      type: Number,
-    },
-    remark: {
-      type: Boolean,
-      default: false,
-    },
+
   },
   { timestamps: true }
 );

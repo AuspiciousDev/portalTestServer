@@ -1,5 +1,7 @@
 const Student = require("../model/Student");
-const bcrypt = require("bcrypt");
+const User = require("../model/User");
+const Grade = require("../model/Grade");
+const Enrolled = require("../model/Enrolled");
 
 const createNewStudent = async (req, res) => {
   console.log("New Student :", req.body);
@@ -108,14 +110,62 @@ const deleteStudentByID = async (req, res) => {
   if (!findID) {
     return res.status(400).json({ message: `${studID} not found!` });
   }
+  const findUser = await User.find({ username: studID });
+  if (findUser) {
+    return res.status(400).json({
+      message: `Cannot delete ${studID} in Users, A record/s currently exists with ${studID}. To delete the record, Remove all records that contains ${studID} `,
+    });
+  }
+  const findGrade = await Grade.find({ studID });
+  if (findGrade) {
+    return res.status(400).json({
+      message: `Cannot delete ${studID} in Grades, A record/s currently exists with ${studID}. To delete the record, Remove all records that contains ${studID} `,
+    });
+  }
+  const findEnroll = await Enrolled.find({ studID });
+  if (findEnroll) {
+    return res.status(400).json({
+      message: `Cannot delete ${studID} in Enrolled, A record/s currently exists with ${studID}. To delete the record, Remove all records that contains ${studID} `,
+    });
+  }
+
   const deleteItem = await findID.deleteOne({ studID });
   res.json(deleteItem);
 };
 
+const toggleStatusById = async (req, res) => {
+  console.log(req.body);
+  const { studID, status } = req.body;
+  if (!studID) {
+    return res.status(400).json({ message: "ID required!" });
+  }
+  console.log(req.body);
+  console.log(studID.toLowerCase());
+
+  const findID = await Student.findOne({
+    studID: studID.toLowerCase(),
+  }).exec();
+  if (!findID) {
+    return res.status(400).json({ message: `${studID} not found!` });
+  }
+  const updateItem = await Student.findOneAndUpdate(
+    { studID: studID.toLowerCase() },
+    {
+      status,
+    }
+  );
+
+  if (!updateItem) {
+    return res.status(400).json({ message: "No Student" });
+  }
+  //const result = await response.save();
+  res.json(updateItem);
+};
 module.exports = {
   createNewStudent,
   getAllStudents,
   getStudentByID,
   updateStudentByID,
   deleteStudentByID,
+  toggleStatusById,
 };

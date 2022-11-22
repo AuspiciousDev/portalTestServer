@@ -14,6 +14,7 @@ const userSchema = new Schema(
     firstName: {
       type: String,
       required: true,
+      lowercase: true,
     },
     middleName: {
       type: String,
@@ -21,6 +22,7 @@ const userSchema = new Schema(
     lastName: {
       type: String,
       required: true,
+      lowercase: true,
     },
     dateOfBirth: {
       type: String,

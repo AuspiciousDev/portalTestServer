@@ -1,7 +1,7 @@
-const ActiveStudent = require("../model/Enrolled");
+const Enrolled = require("../model/Enrolled");
 const Student = require("../model/Student");
 const getAllDoc = async (req, res) => {
-  const doc = await ActiveStudent.find().sort({ createdAt: -1 }).lean();
+  const doc = await Enrolled.find().sort({ createdAt: -1 }).lean();
   if (!doc) return res.status(204).json({ message: "No Data Found!" });
   res.status(200).json(doc);
 };
@@ -29,7 +29,7 @@ const createDoc = async (req, res) => {
     return res.status(400).json({ message: "All Fields are required!" });
   }
   // Check for Duplicate Data
-  const duplicate = await ActiveStudent.findOne({
+  const duplicate = await Enrolled.findOne({
     studID: studID,
     schoolYearID: schoolYearID,
   })
@@ -39,9 +39,10 @@ const createDoc = async (req, res) => {
     return res.status(409).json({ message: "Duplicate Enrollee!" });
   const isActive = await Student.findOne({
     studID: studID,
-    status: false,
   });
-  if (isActive)
+  if (!isActive)
+    return res.status(409).json({ message: "Student does not exists!!" });
+  if (isActive.status === false)
     return res.status(409).json({ message: "Student not Active!" });
   // Create Object
   const docObject = {
@@ -55,7 +56,7 @@ const createDoc = async (req, res) => {
   // Create and Store new Doc
   try {
     // const empObjectRes = await Employee.create(empObject);
-    const response = await ActiveStudent.create(docObject);
+    const response = await Enrolled.create(docObject);
     res.status(201).json(response);
   } catch (error) {
     console.error(error);
@@ -66,7 +67,7 @@ const deleteDocByID = async (req, res) => {
   if (!enrolledID) {
     return res.status(400).json({ message: "ID required!" });
   }
-  const findID = await ActiveStudent.findOne({ enrolledID }).exec();
+  const findID = await Enrolled.findOne({ enrolledID }).exec();
   if (!findID) {
     return res.status(400).json({ message: `${enrolledID} not found!` });
   }

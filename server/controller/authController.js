@@ -54,6 +54,27 @@ const handleLogin = async (req, res) => {
   }
 };
 
+const verifyPassword = async (req, res) => {
+  const { user, pwd } = req.body;
+  if (!user || !pwd)
+    return res
+      .status(400)
+      .json({ message: "username and password are required" });
+
+  const foundUser = await User.findOne({ username: user }).exec();
+  if (!foundUser)
+    return res.status(401).json({ message: "Invalid Username/Password!" }); //Unauth
+  // return res.status(401).json({ message: "Username not found" }); //Unauth
+
+  //evaluate password
+  const match = await bcrypt.compare(pwd, foundUser.password);
+  if (match) {
+    return res.status(200).json({ message: "Confirm" });
+  } else {
+    res.status(401).json({ message: "Invalid Username/Password!" });
+  }
+};
 module.exports = {
   handleLogin,
+  verifyPassword,
 };

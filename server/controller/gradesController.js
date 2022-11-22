@@ -57,9 +57,7 @@ const deleteDocByID = async (req, res) => {
   const deleteItem = await findID.deleteOne({ gradeID });
   res.status(201).json(deleteItem);
 };
-const getGradesByID = async (req, res) => {
-  const { studID, schoolYearID, subjectID } = req.body;
-};
+
 module.exports = {
   createDoc,
   getAllDoc,

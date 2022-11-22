@@ -1,5 +1,6 @@
 const SchoolYear = require("../model/SchoolYear");
-const ActiveStudent = require("../model/Enrolled");
+const Enrolled = require("../model/Enrolled");
+const Grade = require("../model/Grade");
 
 const getAllDoc = async (req, res) => {
   const doc = await SchoolYear.find().sort({ schoolYearID: -1 }).lean();
@@ -94,6 +95,19 @@ const deleteDocByID = async (req, res) => {
   if (!findID) {
     return res.status(400).json({ message: `${schoolYearID} not found!` });
   }
+  const findGrade = await Grade.find({ schoolYearID });
+  if (findGrade) {
+    return res.status(400).json({
+      message: `Cannot delete year ${schoolYearID}, A records currently exists with year ${schoolYearID}. To delete the record, Remove all records that contains ${schoolYearID} `,
+    });
+  }
+  const findEnrolled = await Enrolled.find({ schoolYearID });
+  if (findEnrolled) {
+    return res.status(400).json({
+      message: `Cannot delete year ${schoolYearID}, A records currently exists with year ${schoolYearID}. To delete the record, Remove all records that contains ${schoolYearID} `,
+    });
+  }
+
   const deleteItem = await findID.deleteOne({ schoolYearID });
   res.json(deleteItem);
 };

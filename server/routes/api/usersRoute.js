@@ -6,6 +6,7 @@ router.get("/", usersController.getAllUsers);
 router.patch("/update", usersController.updateUser);
 router.get("/role", usersController.getAllUserByRole);
 router.get("/search/:userNum", usersController.getUserByID);
+router.get("/search", usersController.getUserProfileByID);
 
 router.post("/register", usersController.createNewUser);
 router.delete("/delete", usersController.deleteDocByID);

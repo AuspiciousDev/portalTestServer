@@ -1,4 +1,6 @@
 const Employee = require("../model/Employee");
+const User = require("../model/User");
+const Grade = require("../model/Grade");
 
 const createNewEmployee = async (req, res) => {
   const {
@@ -118,18 +120,98 @@ const updateEmployeeByID = async (req, res) => {
     return res.status(400).json({ message: "Employee ID params is required!" });
   }
 
+  const {
+    empID,
+    empType,
+    SubjectLoads,
+    LevelLoads,
+    SectionLoads,
+    active,
+    firstName,
+    middleName,
+    lastName,
+    suffix,
+    dateOfBirth,
+    placeOfBirth,
+    gender,
+    civilStatus,
+    nationality,
+    religion,
+    address,
+    city,
+    province,
+    email,
+    mobile,
+    telephone,
+    emergencyName,
+    emergencyRelationship,
+    emergencyNumber,
+  } = req.body;
+
   const response = await Employee.findOne({ empID: req.params.empID }).exec();
 
   if (!response) {
-    return res.status(204).json({ message: "Employee ID required!" });
+    return res.status(204).json({ message: "Employee doesn't exists!" });
   }
+
+  const empObject = {
+    empID,
+    empType: empType.types,
+    SubjectLoads,
+    LevelLoads,
+    SectionLoads,
+    active,
+    firstName,
+    middleName,
+    lastName,
+    suffix,
+    dateOfBirth,
+    placeOfBirth,
+    gender,
+    civilStatus,
+    nationality,
+    religion,
+    address,
+    city,
+    province,
+    email,
+    mobile,
+    telephone,
+    emergencyName,
+    emergencyRelationship,
+    emergencyNumber,
+  };
   const update = await Employee.findOneAndUpdate(
     { empID: req.params.empID },
     {
-      ...req.body,
+      empID,
+      empType: empType.types,
+      SubjectLoads,
+      LevelLoads,
+      SectionLoads,
+      active,
+      firstName,
+      middleName,
+      lastName,
+      suffix,
+      dateOfBirth,
+      placeOfBirth,
+      gender,
+      civilStatus,
+      nationality,
+      religion,
+      address,
+      city,
+      province,
+      email,
+      mobile,
+      telephone,
+      emergencyName,
+      emergencyRelationship,
+      emergencyNumber,
     }
   );
-
+  console.log(update);
   if (!update) {
     return res.status(400).json({ error: "No Employee" });
   }
@@ -146,6 +228,19 @@ const deleteEmployeeByID = async (req, res) => {
   if (!findID) {
     return res.status(400).json({ message: `${empID} not found!` });
   }
+  const findUser = await User.find({ username: empID });
+  if (findUser) {
+    return res.status(400).json({
+      message: `Cannot delete ${empID}, A records currently exists with ${empID} in Users. To delete the record, Remove all records that contains ${empID} `,
+    });
+  }
+  const findGrade = await Grade.find({ empID });
+  if (findGrade) {
+    return res.status(400).json({
+      message: `Cannot delete ${empID}, A records currently exists with ${empID} in Grades. To delete the record, Remove all records that contains ${empID} `,
+    });
+  }
+
   const deleteItem = await findID.deleteOne({ empID });
   res.json(deleteItem);
 };

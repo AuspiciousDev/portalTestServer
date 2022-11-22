@@ -169,6 +169,75 @@ const removeUserRoleByID = async (req, res) => {
   );
 };
 
+const forgot = async (req, res) => {
+  let verify;
+  try {
+    const { email } = req.body;
+    verify = await Student.findOne({ email });
+    if (!verify) {
+      verify = await Employee.findOne({ email });
+    } else {
+      return res
+        .status(404)
+        .json({ message: `Email ${email} does not exists!` });
+    }
+  } catch (error) {}
+};
+
+const getUserProfileByID = async (req, res) => {
+  let verifyUserExists;
+  let user;
+  try {
+    const { username, roles } = req.body;
+    if (!username || !Array.isArray(roles) || !roles.length) {
+      return res.status(400).json({ message: "All fields are required!" });
+    }
+
+    const exists = await User.findOne({ username }).lean().exec();
+    if (!exists) {
+      return res.status(404).json({ message: "User does not exists!" });
+    }
+    if (roles.includes("2001" || "2002")) {
+      verifyUserExists = await Employee.findOne({ empID: username })
+        .lean()
+        .exec();
+    } else if (roles.includes("2003")) {
+      verifyUserExists = await Student.findOne({ studID: username })
+        .lean()
+        .exec();
+    }
+    console.log("Verify User Exists :", verifyUserExists);
+    if (
+      !verifyUserExists ||
+      verifyUserExists === null ||
+      verifyUserExists === undefined
+    )
+      return res
+        .status(409)
+        .json({ message: `Username ${username} does not exists!` });
+
+    if (roles.includes("2001" || "2002")) {
+    } else if (roles.includes("2003")) {
+      user = await User.findOne({ username }, [
+        {
+          $lookup: {
+            from: "students",
+            localField: "username",
+            foreignField: "studID",
+            as: "StudentProfile",
+          },
+        },
+        {
+          $unwind: {
+            path: "$StudentProfile",
+          },
+        },
+      ]);
+
+      console.log(user);
+    }
+  } catch (error) {}
+};
 module.exports = {
   createNewUser,
   updateUser,
@@ -176,4 +245,5 @@ module.exports = {
   getAllUserByRole,
   getUserByID,
   deleteDocByID,
+  getUserProfileByID,
 };

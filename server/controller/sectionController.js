@@ -1,4 +1,5 @@
 const Section = require("../model/Section");
+const Enrolled = require("../model/Enrolled");
 
 const getAllDoc = async (req, res) => {
   const doc = await Section.find().sort({ createdAt: -1 }).lean();
@@ -76,9 +77,18 @@ const deleteDocByID = async (req, res) => {
   if (!findID) {
     return res.status(400).json({ message: `${sectionID} not found!` });
   }
+
+  const findEnroll = await Enrolled.find({ sectionID });
+  if (findEnroll) {
+    return res.status(400).json({
+      message: `Cannot delete ${sectionID} in Enrolled, A record/s currently exists with ${sectionID}. To delete the record, Remove all records that contains ${sectionID} `,
+    });
+  }
+
   const deleteItem = await findID.deleteOne({ sectionID });
   res.status(201).json(deleteItem);
 };
+
 const toggleStatusById = async (req, res) => {
   console.log(req.body);
   const { sectionID, status } = req.body;

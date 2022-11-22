@@ -79,10 +79,40 @@ const deleteDocByID = async (req, res) => {
   res.json(deleteItem);
 };
 
+const toggleStatusById = async (req, res) => {
+  console.log(req.body);
+  const { subjectID, status } = req.body;
+  if (!subjectID) {
+    return res.status(400).json({ message: "ID required!" });
+  }
+  console.log(req.body);
+  console.log(subjectID.toLowerCase());
+
+  const findID = await Subject.findOne({
+    subjectID: subjectID.toLowerCase(),
+  }).exec();
+  if (!findID) {
+    return res.status(400).json({ message: `${subjectID} not found!` });
+  }
+  const updateItem = await Subject.findOneAndUpdate(
+    { subjectID: subjectID.toLowerCase() },
+    {
+      status,
+    }
+  );
+
+  if (!updateItem) {
+    return res.status(400).json({ message: "No Subject" });
+  }
+  //const result = await response.save();
+  res.json(updateItem);
+  console.log(updateItem);
+};
 module.exports = {
   createDoc,
   getAllDoc,
   getDocByID,
   updateDocByID,
   deleteDocByID,
+  toggleStatusById,
 };

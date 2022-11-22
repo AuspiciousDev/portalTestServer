@@ -6,6 +6,7 @@ const userSchema = new Schema(
     sectionID: {
       type: String,
       required: true,
+      lowercase: true,
     },
     departmentID: {
       type: String,
@@ -18,6 +19,7 @@ const userSchema = new Schema(
     sectionName: {
       type: String,
       required: true,
+      lowercase: true,
     },
     status: {
       type: Boolean,

@@ -78,6 +78,12 @@ const deleteDocByID = async (req, res) => {
   if (!findID) {
     return res.status(400).json({ message: `${departmentID} not found!` });
   }
+  const findEnrolled = await Level.find({ departmentID });
+  if (findEnrolled) {
+    return res.status(400).json({
+      message: `Cannot delete ${departmentID}, A records currently exists with  ${departmentID}. To delete the record, Remove all records that contains ${departmentID} `,
+    });
+  }
   const deleteItem = await findID.deleteOne({ departmentID });
   res.status(201).json(deleteItem);
 };

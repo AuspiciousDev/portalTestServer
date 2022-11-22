@@ -5,6 +5,7 @@ const userSchema = new Schema(
     subjectID: {
       type: String,
       required: true,
+      lowercase: true,
     },
     levelID: {
       type: String,
@@ -13,6 +14,7 @@ const userSchema = new Schema(
     subjectName: {
       type: String,
       required: true,
+      lowercase: true,
     },
     description: {
       type: String,
