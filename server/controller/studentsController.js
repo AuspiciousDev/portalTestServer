@@ -13,8 +13,20 @@ const createNewStudent = async (req, res) => {
     lastName,
     suffix,
     dateOfBirth,
+    placeOfBirth,
     gender,
+    civilStatus,
+    nationality,
+    religion,
+    address,
+    city,
+    province,
     email,
+    mobile,
+    telephone,
+    emergencyName,
+    emergencyRelationship,
+    emergencyNumber,
   } = req.body;
 
   console.log(studID);
@@ -41,19 +53,31 @@ const createNewStudent = async (req, res) => {
   const duplicate = await Student.findOne({ studID }).exec();
   if (duplicate) return res.status(409).json({ message: "Duplicate Student" });
   const empObject = {
-    studID: studID.toLowerCase(),
-    LRN: LRN.toLowerCase(),
-    firstName: firstName.toLowerCase(),
-    middleName: middleName.toLowerCase(),
-    lastName: lastName.toLowerCase(),
-    suffix: suffix.toLowerCase(),
-    dateOfBirth: dateOfBirth.toLowerCase(),
-    gender: gender.toLowerCase(),
-    email: email.toLowerCase(),
+    studID,
+    LRN,
+    firstName,
+    middleName,
+    lastName,
+    suffix,
+    dateOfBirth,
+    placeOfBirth,
+    gender,
+    civilStatus,
+    nationality,
+    religion,
+    address,
+    city,
+    province,
+    email,
+    mobile,
+    telephone,
+    emergencyName,
+    emergencyRelationship,
+    emergencyNumber,
   };
   try {
     const empObjectRes = await Student.create(empObject);
-    if (!empObjectRes) return res.sendStatus(409);
+    if (!empObjectRes)  return res.status(400).json({ message: "Cannot create student!" });
     console.log(empObjectRes);
     res.status(201).json(empObjectRes);
   } catch (error) {
@@ -78,19 +102,87 @@ const getStudentByID = async (req, res) => {
   res.json(student);
 };
 const updateStudentByID = async (req, res) => {
+  console.log(req.body);
   if (!req?.params?.studID) {
     return res.status(400).json({ message: "Student ID params is required!" });
   }
+  const {
+    studID,
+    LRN,
+    firstName,
+    middleName,
+    lastName,
+    suffix,
+    dateOfBirth,
+    placeOfBirth,
+    gender,
+    civilStatus,
+    nationality,
+    religion,
+    address,
+    city,
+    province,
+    email,
+    mobile,
+    telephone,
+    emergencyName,
+    emergencyRelationship,
+    emergencyNumber,
+  } = req.body;
 
   const response = await Student.findOne({ studID: req.params.studID }).exec();
 
   if (!response) {
     return res.status(204).json({ message: "Employee ID required!" });
   }
+
+  const object = {
+    LRN,
+    firstName,
+    middleName,
+    lastName,
+    suffix,
+    dateOfBirth,
+    placeOfBirth,
+    gender,
+    civilStatus,
+    nationality,
+    religion,
+    address,
+    city,
+    province,
+    email,
+    mobile,
+    telephone,
+    emergencyName,
+    emergencyRelationship,
+    emergencyNumber,
+  };
+
+
   const update = await Student.findOneAndUpdate(
     { studID: req.params.studID },
     {
-      ...req.body,
+      LRN,
+      firstName,
+      middleName,
+      lastName,
+      suffix,
+      dateOfBirth,
+      placeOfBirth,
+      gender,
+      civilStatus,
+      nationality,
+      religion,
+      address,
+      city,
+      province,
+      email,
+      mobile,
+      telephone,
+      emergencyName,
+      emergencyRelationship,
+      emergencyNumber,
     }
   );
 
@@ -110,19 +202,22 @@ const deleteStudentByID = async (req, res) => {
   if (!findID) {
     return res.status(400).json({ message: `${studID} not found!` });
   }
-  const findUser = await User.find({ username: studID });
+  const findUser = await User.findOne({ username: studID });
+  console.log(findUser);
   if (findUser) {
     return res.status(400).json({
-      message: `Cannot delete ${studID} in Users, A record/s currently exists with ${studID}. To delete the record, Remove all records that contains ${studID} `,
+      message: `Cannot delete ${studID} in Users collections, A record/s currently exists with ${studID}. To delete the record, Remove all records that contains ${studID} `,
     });
   }
-  const findGrade = await Grade.find({ studID });
+  const findGrade = await Grade.findOne({ studID }).exec();
+  console.log(findGrade);
   if (findGrade) {
     return res.status(400).json({
       message: `Cannot delete ${studID} in Grades, A record/s currently exists with ${studID}. To delete the record, Remove all records that contains ${studID} `,
     });
   }
-  const findEnroll = await Enrolled.find({ studID });
+  const findEnroll = await Enrolled.findOne({ studID }).exec();
+  console.log(findEnroll);
   if (findEnroll) {
     return res.status(400).json({
       message: `Cannot delete ${studID} in Enrolled, A record/s currently exists with ${studID}. To delete the record, Remove all records that contains ${studID} `,

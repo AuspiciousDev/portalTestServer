@@ -184,7 +184,6 @@ const updateEmployeeByID = async (req, res) => {
   const update = await Employee.findOneAndUpdate(
     { empID: req.params.empID },
     {
-      empID,
       empType: empType.types,
       SubjectLoads,
       LevelLoads,

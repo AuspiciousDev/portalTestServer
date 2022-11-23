@@ -11,6 +11,10 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: Boolean,
+      default: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -24,6 +28,7 @@ const userSchema = new Schema(
       required: true,
       lowercase: true,
     },
+
     dateOfBirth: {
       type: String,
       required: true,
@@ -36,7 +41,19 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    placeOfBirth: {
+      type: String,
+    },
     suffix: {
+      type: String,
+    },
+    civilStatus: {
+      type: String,
+    },
+    nationality: {
+      type: String,
+    },
+    religion: {
       type: String,
     },
     address: {
@@ -52,6 +69,9 @@ const userSchema = new Schema(
     mobile: {
       type: String,
     },
+    telephone: {
+      type: String,
+    },
     emergencyName: {
       type: String,
     },
@@ -60,10 +80,6 @@ const userSchema = new Schema(
     },
     emergencyNumber: {
       type: String,
-    },
-    status: {
-      type: Boolean,
-      default: true,
     },
     refreshToken: String,
   },
