@@ -77,7 +77,8 @@ const createNewStudent = async (req, res) => {
   };
   try {
     const empObjectRes = await Student.create(empObject);
-    if (!empObjectRes)  return res.status(400).json({ message: "Cannot create student!" });
+    if (!empObjectRes)
+      return res.status(400).json({ message: "Cannot create student!" });
     console.log(empObjectRes);
     res.status(201).json(empObjectRes);
   } catch (error) {
@@ -158,7 +159,6 @@ const updateStudentByID = async (req, res) => {
     emergencyRelationship,
     emergencyNumber,
   };
-
 
   const update = await Student.findOneAndUpdate(
     { studID: req.params.studID },
@@ -256,6 +256,45 @@ const toggleStatusById = async (req, res) => {
   //const result = await response.save();
   res.json(updateItem);
 };
+
+const updateIMG = async (req, res) => {
+  if (!req?.params?.studID) {
+    return res.status(400).json({ message: "Student ID params is required!" });
+  }
+
+  const { studID, imgURL } = req.body;
+  console.log(req.body);
+  console.log(imgURL);
+  if (!imgURL) {
+    return console.log("wala iamge");
+  }
+  if (!imgURL) {
+    return res.status(400).json({ message: "Image URL is required!" });
+  }
+  const response = await Student.findOne({ imgURL: req.params.imgURL }).exec();
+
+  if (!response) {
+    return res.status(204).json({ message: "Student doesn't exists!" });
+  }
+
+  const empObject = {
+    studID,
+    imgURL,
+  };
+  console.log(empObject.imgURL);
+  const update = await Student.findOneAndUpdate(
+    { imgURL: req.params.imgURL },
+    {
+      $set: { imgURL: empObject.imgURL },
+    }
+  );
+  console.log(update);
+  if (!update) {
+    return res.status(400).json({ error: "No Student" });
+  }
+  //const result = await response.save();
+  res.json(update);
+};
 module.exports = {
   createNewStudent,
   getAllStudents,
@@ -263,4 +302,5 @@ module.exports = {
   updateStudentByID,
   deleteStudentByID,
   toggleStatusById,
+  updateIMG,
 };

@@ -2,7 +2,32 @@ const Section = require("../model/Section");
 const Enrolled = require("../model/Enrolled");
 
 const getAllDoc = async (req, res) => {
-  const doc = await Section.find().sort({ createdAt: -1 }).lean();
+  // const doc = await Section.find().sort({ createdAt: -1 }).lean();
+  const doc = await Section.aggregate([
+    {
+      $lookup: {
+        from: "levels",
+        localField: "levelID",
+        foreignField: "levelID",
+        as: "result",
+      },
+    },
+    {
+      $unwind: {
+        path: "$result",
+      },
+    },
+    {
+      $set: {
+        depName: {
+          $toString: "$result.levelNum",
+        },
+        lvlStatus: {
+          $toBool: "$result.status",
+        },
+      },
+    },
+  ]);
   if (!doc) return res.status(204).json({ message: "No Data Found!" });
   res.status(200).json(doc);
 };

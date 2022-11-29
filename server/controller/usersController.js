@@ -34,10 +34,11 @@ const getAllUsers = async (req, res) => {
   res.status(200).json(users);
 };
 
-const createNewUser = async (req, res) => {
+const createNewUser1 = async (req, res) => {
   // Retrieve data
   let defPassword;
   let verifyUserExists;
+  let userType;
   const { username, roles, password } = req.body;
   console.log(username, roles, password);
   // Validate Data if given
@@ -49,10 +50,12 @@ const createNewUser = async (req, res) => {
     verifyUserExists = await Employee.findOne({ empID: username })
       .lean()
       .exec();
+    userType = "employee";
   } else if (roles.includes("2003")) {
     verifyUserExists = await Student.findOne({ studID: username })
       .lean()
       .exec();
+    userType = "student";
   }
   console.log("Verify User Exists :", verifyUserExists);
   if (
@@ -76,9 +79,64 @@ const createNewUser = async (req, res) => {
     defPassword = password;
   }
   const hashedPassword = await bcrypt.hash(defPassword, 10);
-  const userObject = { username, password: hashedPassword, roles };
+  const userObject = { username, password: hashedPassword, roles, userType };
 
   // Create and Store new User
+  try {
+    // const empObjectRes = await Employee.create(empObject);
+    const response = await User.create(userObject);
+    res.status(201).json(response);
+  } catch (error) {
+    console.error(error);
+  }
+};
+const createNewUser = async (req, res) => {
+  // Retrieve data
+  let verifyUserExists;
+  const roles = [];
+  const { username } = req.body;
+  console.log(req.body);
+  let userType;
+  // Validate Data if given
+
+  if (!username) {
+    return res.status(400).json({ message: "All fields are required!" });
+  }
+
+  const duplicate = await User.findOne({ username }).lean().exec();
+  if (duplicate) {
+    return res.status(409).json({ message: "Username already registered!" });
+  }
+  verifyUserExists = await Employee.findOne({ empID: username }).lean().exec();
+  console.log("Register1: ", verifyUserExists);
+  userType = "employee";
+  if (
+    !verifyUserExists ||
+    verifyUserExists === null ||
+    verifyUserExists === undefined
+  ) {
+    verifyUserExists = await Student.findOne({ studID: username })
+      .lean()
+      .exec();
+    console.log("Register2: ", verifyUserExists);
+    userType = "student";
+    if (
+      !verifyUserExists ||
+      verifyUserExists === null ||
+      verifyUserExists === undefined
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Username/Email does not exists!" });
+    } else {
+      roles.push(2003);
+    }
+  } else {
+    roles.push(parseInt(verifyUserExists.empType));
+  }
+  const password = "P@$$W0RD";
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const userObject = { username, password: hashedPassword, roles, userType };
   try {
     // const empObjectRes = await Employee.create(empObject);
     const response = await User.create(userObject);

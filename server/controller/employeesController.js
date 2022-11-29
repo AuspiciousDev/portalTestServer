@@ -217,6 +217,44 @@ const updateEmployeeByID = async (req, res) => {
   //const result = await response.save();
   res.json(update);
 };
+const updateEmployeeIMG = async (req, res) => {
+  if (!req?.params?.empID) {
+    return res.status(400).json({ message: "Employee ID params is required!" });
+  }
+
+  const { empID, imgURL } = req.body;
+  console.log(req.body);
+  console.log(imgURL);
+  if (!imgURL) {
+    return console.log("wala iamge");
+  }
+  if (!imgURL) {
+    return res.status(400).json({ message: "Image URL is required!" });
+  }
+  const response = await Employee.findOne({ empID: req.params.empID }).exec();
+
+  if (!response) {
+    return res.status(204).json({ message: "Employee doesn't exists!" });
+  }
+
+  const empObject = {
+    empID,
+    imgURL,
+  };
+  console.log(empObject.imgURL);
+  const update = await Employee.findOneAndUpdate(
+    { empID: req.params.empID },
+    {
+      $set: { imgURL: empObject.imgURL },
+    }
+  );
+  console.log(update);
+  if (!update) {
+    return res.status(400).json({ error: "No Employee" });
+  }
+  //const result = await response.save();
+  res.json(update);
+};
 
 const deleteEmployeeByID = async (req, res) => {
   const { empID } = req.body;
@@ -278,4 +316,5 @@ module.exports = {
   updateEmployeeByID,
   deleteEmployeeByID,
   toggleStatusById,
+  updateEmployeeIMG,
 };

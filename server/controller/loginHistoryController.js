@@ -1,7 +1,56 @@
 const LoginHistory = require("../model/LoginHistory");
 
 const getAllDoc = async (req, res) => {
-  const doc = await LoginHistory.find().sort({ createdAt: -1 }).lean();
+  // const doc = await LoginHistory.find().sort({ createdAt: -1 }).lean();
+  const doc = await LoginHistory.aggregate([
+    {
+      $lookup: {
+        from: "employees",
+        localField: "username",
+        foreignField: "empID",
+        as: "result",
+      },
+    },
+    {
+      $unwind: {
+        path: "$result",
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "username",
+        foreignField: "username",
+        as: "resultU",
+      },
+    },
+    {
+      $unwind: {
+        path: "$resultU",
+      },
+    },
+    {
+      $set: {
+        imgURL: {
+          $toString: "$result.imgURL",
+        },
+        depStatus: {
+          $toBool: "$result.status",
+        },
+        lastName: {
+          $toString: "$result.lastName",
+        },
+        userType: {
+          $toString: "$resultU.userType",
+        },
+      },
+    },
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
+  ]);
   if (!doc) return res.status(204).json({ message: "No Data Found!" });
   res.status(200).json(doc);
 };

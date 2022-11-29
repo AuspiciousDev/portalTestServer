@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema(
   {
+    imgURL: {
+      type: String,
+      default: "",
+    },
     empID: {
       type: String,
       required: true,
